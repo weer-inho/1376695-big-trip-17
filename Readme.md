@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Руслан Амиров](https://up.htmlacademy.ru/ecmascript/17/user/1376695).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Григорьев](https://htmlacademy.ru/profile/fuckhtml).
 
 ---
 
