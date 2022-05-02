@@ -7,7 +7,10 @@ import TripEventsListView from '../view/trip-events-list';
 import {render, RenderPosition} from '../render';
 
 export default class BoardPresenter {
-  init = (boardContainer) => {
+  init = (boardContainer, tripsModel) => {
+    this.tripsModel = tripsModel;
+    this.boardTrips = [...this.tripsModel.getTrips()];
+
     this.boardContainer = boardContainer;
     this.tripControls = this.boardContainer.querySelector('.trip-main');
     this.tripControlsFilters = this.tripControls.querySelector('.trip-controls__filters');
@@ -20,8 +23,8 @@ export default class BoardPresenter {
     this.tripEventsList = this.tripEvents.querySelector('.trip-events__list');
     render(new NewFormView(), this.tripEventsList);
 
-    for (let i = 0; i < 3; i++) {
-      render(new RoutePointView(), this.tripEventsList);
+    for (let i = 0; i < this.boardTrips.length; i++) {
+      render(new RoutePointView(this.boardTrips[i]), this.tripEventsList);
     }
   };
 }
