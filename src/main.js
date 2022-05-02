@@ -1,7 +1,8 @@
 import BoardPresenter from './presenter/board-presenter';
 import {generatePoint} from './mock/point';
+import TripsModel from './model/trips-model';
 
-console.log(generatePoint());
+const tripsModel = new TripsModel();
 
 const body = document.querySelector('.page-body');
 
