@@ -27,7 +27,7 @@ export const generatePictures = () => ([
 ]);
 
 export const generateDestination = () => ({
-  destination: description[getRandomInteger(1, description.length)],
+  destinationDescription: description[getRandomInteger(1, description.length)],
   name: cities[getRandomInteger(1, cities.length)],
   pictures: generatePictures(),
 });

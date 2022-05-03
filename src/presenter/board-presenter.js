@@ -21,9 +21,9 @@ export default class BoardPresenter {
     render(new SortView(), this.tripEvents);
     render(new TripEventsListView(), this.tripEvents);
     this.tripEventsList = this.tripEvents.querySelector('.trip-events__list');
-    render(new NewFormView(), this.tripEventsList);
+    render(new NewFormView(this.boardTrips[0]), this.tripEventsList);
 
-    for (let i = 0; i < this.boardTrips.length; i++) {
+    for (let i = 1; i < this.boardTrips.length; i++) {
       render(new RoutePointView(this.boardTrips[i]), this.tripEventsList);
     }
   };
