@@ -23,7 +23,7 @@ ${photos.map((photo) => `<img class="event__photo" src="${photo.src}" alt="${pho
 `);
 
 const createNewFormTemplate = (trip) => {
-  const {type, destination, dateFrom, dateTo, basePrice, offer, isFavorite} = trip;
+  const {type, destination, dateFrom, dateTo, basePrice, offer} = trip;
 
   return (
     `<form class="event event--edit" action="#" method="post">

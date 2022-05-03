@@ -56,7 +56,6 @@ export default class RoutePointView {
   }
 
   getTemplate() {
-    console.log(this.trip);
     return createRoutePointTemplate(this.trip);
   }
 
