@@ -31,7 +31,13 @@ export default class BoardPresenter {
     this.#tripEventsList = this.#tripEvents.querySelector('.trip-events__list');
 
     for (let i = 1; i < this.#boardTrips.length; i++) {
-      render(new RoutePointView(this.#boardTrips[i]), this.#tripEventsList);
+      this.#renderTrip(this.#boardTrips[i]);
     }
   };
+
+  #renderTrip = (trip) => {
+    const tripComponent = new RoutePointView(trip);
+
+    render(tripComponent, this.#tripEventsList);
+  }
 }
