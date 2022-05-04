@@ -39,12 +39,22 @@ export default class BoardPresenter {
     const tripEditComponent = new NewFormView(trip);
     const tripComponent = new RoutePointView(trip);
 
+    const onEscKeyDown = (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'Esc') {
+        evt.preventDefault();
+        replaceFormToRoute();
+        document.removeEventListener('keydown', onEscKeyDown);
+      }
+    };
+
     const replaceRouteToForm = () => {
       this.#tripEventsList.replaceChild(tripEditComponent.element, tripComponent.element);
+      document.addEventListener('keydown', onEscKeyDown);
     };
 
     const replaceFormToRoute = () => {
       this.#tripEventsList.replaceChild(tripComponent.element, tripEditComponent.element);
+      document.removeEventListener('keydown', onEscKeyDown);
     };
 
     tripComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
