@@ -36,8 +36,26 @@ export default class BoardPresenter {
   };
 
   #renderTrip = (trip) => {
+    const tripEditComponent = new NewFormView(trip);
     const tripComponent = new RoutePointView(trip);
 
+    const replaceRouteToForm = () => {
+      this.#tripEventsList.replaceChild(tripEditComponent.element, tripComponent.element);
+    };
+
+    const replaceFormToRoute = () => {
+      this.#tripEventsList.replaceChild(tripComponent.element, tripEditComponent.element);
+    };
+
+    tripComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+      replaceRouteToForm();
+    });
+
+    tripEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      replaceFormToRoute();
+    });
+
     render(tripComponent, this.#tripEventsList);
-  }
+  };
 }
