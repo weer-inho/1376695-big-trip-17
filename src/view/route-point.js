@@ -51,23 +51,26 @@ const createRoutePointTemplate = (trip) => {
 };
 
 export default class RoutePointView {
+  #element = null;
+  #trip = null;
+
   constructor(trip) {
-    this.trip = trip;
+    this.#trip = trip;
   }
 
-  getTemplate() {
-    return createRoutePointTemplate(this.trip);
+  get template() {
+    return createRoutePointTemplate(this.#trip);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
