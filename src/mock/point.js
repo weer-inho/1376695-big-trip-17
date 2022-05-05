@@ -33,7 +33,7 @@ export const generateDestination = () => ({
 });
 
 export const generatePoint = () => {
-  const typePoint =  offerTypes[getRandomInteger(1, offerTypes.length)];
+  const typePoint =  offerTypes[getRandomInteger(0, 8)];
 
   return {
     basePrice: getRandomInteger(500, 10000),
