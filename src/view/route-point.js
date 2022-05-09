@@ -1,4 +1,4 @@
-import {createElement} from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import {getDuration} from '../utils';
 import dayjs from 'dayjs';
 
@@ -50,27 +50,15 @@ const createRoutePointTemplate = (trip) => {
   );
 };
 
-export default class RoutePointView {
-  #element = null;
+export default class RoutePointView extends AbstractView {
   #trip = null;
 
   constructor(trip) {
+    super();
     this.#trip = trip;
   }
 
   get template() {
     return createRoutePointTemplate(this.#trip);
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
   }
 }
