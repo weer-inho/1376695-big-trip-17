@@ -47,13 +47,12 @@ export default class BoardPresenter {
       }
     };
 
-    tripComponent.element.querySelector('.event__rollup-btn').addEventListener('click', () => {
+    tripComponent.setEditClickHandler(() => {
       replaceRouteToForm();
       document.addEventListener('keydown', onEscKeyDown);
     });
 
-    tripEditComponent.element.querySelector('form').addEventListener('submit', (evt) => {
-      evt.preventDefault();
+    tripEditComponent.setSaveFormHandler(() => {
       replaceFormToRoute();
       document.removeEventListener('keydown', onEscKeyDown);
     });

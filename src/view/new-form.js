@@ -208,4 +208,15 @@ export default class NewFormView extends AbstractView {
   get template() {
     return createNewFormTemplate(this.#trip);
   }
+
+  setSaveFormHandler = (callback) => {
+    this._callback.saveForm = callback;
+    this.element.querySelector('form').
+      addEventListener('submit', this.#saveFormHandler);
+  };
+
+  #saveFormHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.saveForm();
+  };
 }
