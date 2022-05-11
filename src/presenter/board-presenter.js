@@ -71,7 +71,7 @@ export default class BoardPresenter {
       render(new EmptyView(), this.#tripEvents);
       return;
     }
-    render(new InfoView(), this.#tripControls, RenderPosition.AFTERBEGIN);
+    render(new InfoView(this.#boardTrips), this.#tripControls, RenderPosition.AFTERBEGIN);
     render(new SortView(), this.#tripEvents);
     render(new TripEventsListView(), this.#tripEvents);
     this.#tripEventsList = this.#tripEvents.querySelector('.trip-events__list');
