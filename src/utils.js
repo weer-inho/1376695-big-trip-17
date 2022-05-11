@@ -24,3 +24,21 @@ export const getDuration = (startDate, endDate) => {
 
   return `${formatTime(days)}D ${formatTime(hours)}H ${formatTime(minutes)}M`;
 };
+
+export const generateInfoTitles = (trips) => {
+  switch (trips.length) {
+    case 1:
+      return [trips[0].destination.name];
+      break;
+    case 2:
+      return [trips[0].destination.name, trips[1].destination.name];
+      break;
+    case 3:
+      return [trips[0].destination.name, trips[1].destination.name, trips[2].destination.name];
+      break;
+    default:
+      return [trips[0].destination.name, '...', trips[trips.length-1].destination.name];
+      break;
+  }
+};
+
