@@ -6,7 +6,6 @@ import RoutePointView from '../view/route-point';
 import NewFormView from '../view/new-form';
 import TripEventsListView from '../view/trip-events-list';
 import {render, RenderPosition} from '../framework/render';
-import {generateInfoDates, generateInfoTitles} from '../utils';
 
 export default class BoardPresenter {
   #tripsModel = null;

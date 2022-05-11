@@ -29,16 +29,12 @@ export const generateInfoTitles = (trips) => {
   switch (trips.length) {
     case 1:
       return [trips[0].destination.name];
-      break;
     case 2:
       return [trips[0].destination.name, trips[1].destination.name];
-      break;
     case 3:
       return [trips[0].destination.name, trips[1].destination.name, trips[2].destination.name];
-      break;
     default:
       return [trips[0].destination.name, '...', trips[trips.length-1].destination.name];
-      break;
   }
 };
 
@@ -47,10 +43,10 @@ export const generateInfoDates = (trips) => [dayjs(trips[0].dateFrom).format('MM
 export const generateInfoCost = (trips) => {
   let total = 0;
 
-  trips.forEach(element => {
+  trips.forEach((element) => {
     total += element.basePrice;
     if (element.offer.length > 0) {
-      element.offer.forEach(offer => total += offer.price)
+      element.offer.forEach((offer) => (total += offer.price));
     }
   });
 
