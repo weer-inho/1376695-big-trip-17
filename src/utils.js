@@ -42,3 +42,6 @@ export const generateInfoTitles = (trips) => {
   }
 };
 
+export const generateInfoDates = (trips) => [dayjs(trips[0].dateFrom).format('MMM D').toUpperCase(), dayjs(trips[trips.length-1].dateTo).format('D')];
+
+

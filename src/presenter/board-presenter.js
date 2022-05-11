@@ -6,7 +6,7 @@ import RoutePointView from '../view/route-point';
 import NewFormView from '../view/new-form';
 import TripEventsListView from '../view/trip-events-list';
 import {render, RenderPosition} from '../framework/render';
-import {generateInfoTitles} from '../utils';
+import {generateInfoDates, generateInfoTitles} from '../utils';
 
 export default class BoardPresenter {
   #tripsModel = null;
@@ -72,8 +72,7 @@ export default class BoardPresenter {
       render(new EmptyView(), this.#tripEvents);
       return;
     }
-    const infoTitles = generateInfoTitles(this.#boardTrips);
-    render(new InfoView(infoTitles), this.#tripControls, RenderPosition.AFTERBEGIN);
+    render(new InfoView(this.#boardTrips), this.#tripControls, RenderPosition.AFTERBEGIN);
     render(new SortView(), this.#tripEvents);
     render(new TripEventsListView(), this.#tripEvents);
     this.#tripEventsList = this.#tripEvents.querySelector('.trip-events__list');
