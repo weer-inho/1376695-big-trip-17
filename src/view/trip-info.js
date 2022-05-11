@@ -1,9 +1,10 @@
 import AbstractView from '../framework/view/abstract-view';
-import {generateInfoDates, generateInfoTitles} from '../utils';
+import {generateInfoDates, generateInfoTitles, generateInfoCost} from '../utils';
 
 const createInfoTemplate = (trips) => {
   const tripDates = generateInfoDates(trips);
   const tripInfo = generateInfoTitles(trips).join([' &mdash; ']);
+  const tripCost = generateInfoCost(trips);
 
   return (
     `<section class="trip-main__trip-info  trip-info">
@@ -16,7 +17,7 @@ const createInfoTemplate = (trips) => {
       </div>
 
       <p class="trip-info__cost">
-        Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
+        Total: &euro;&nbsp;<span class="trip-info__cost-value">${tripCost}</span>
       </p>
     </section>`
   );

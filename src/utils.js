@@ -44,4 +44,15 @@ export const generateInfoTitles = (trips) => {
 
 export const generateInfoDates = (trips) => [dayjs(trips[0].dateFrom).format('MMM D').toUpperCase(), dayjs(trips[trips.length-1].dateTo).format('D')];
 
+export const generateInfoCost = (trips) => {
+  let total = 0;
 
+  trips.forEach(element => {
+    total += element.basePrice;
+    if (element.offer.length > 0) {
+      element.offer.forEach(offer => total += offer.price)
+    }
+  });
+
+  return total;
+};
