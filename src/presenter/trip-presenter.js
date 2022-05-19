@@ -15,11 +15,30 @@ export default class TripPresenter {
   init = (trip) => {
     this.#trip = trip;
 
+    const prevTripComponent = this.#tripComponent;
+    const prevTripEditComponent = this.#tripEditComponent;
+
     this.#tripComponent = new RoutePointView(trip);
     this.#tripEditComponent = new NewFormView(trip);
 
     this.#tripComponent.setEditClickHandler(this.#handleEditClick);
     this.#tripEditComponent.setSaveFormHandler(this.#handleSaveForm);
+
+    if (prevTripComponent === null || prevTripEditComponent === null) {
+      render(this.#tripComponent, this.#tripListContainer);
+      return;
+    }
+
+    if (this.#tripListContainer.contains(prevTripComponent.element)) {
+      replace(this.#tripComponent, prevTripComponent);
+    }
+
+    if (this.#tripListContainer.contains(prevTripEditComponent.element)) {
+      replace(this.#tripEditComponent, prevTripEditComponent);
+    }
+
+    remove(prevTripComponent);
+    remove(prevTripEditComponent);
 
     render(this.#tripComponent, this.#tripListContainer);
   };
