@@ -5,6 +5,7 @@ import EmptyView from '../view/empty';
 import TripEventsListView from '../view/trip-events-list';
 import TripPresenter from './trip-presenter';
 import {render, RenderPosition} from '../framework/render';
+import {updateItem} from "../utils";
 
 export default class BoardPresenter {
   #tripsModel = null;
@@ -50,7 +51,7 @@ export default class BoardPresenter {
   };
 
   #renderTrip = (trip) => {
-    const tripPresenter = new TripPresenter(this.#tripEventsList);
+    const tripPresenter = new TripPresenter(this.#tripEventsList, this.#handleTripChange);
     tripPresenter.init(trip);
     this.#tripPresenter.set(trip.id, tripPresenter);
   };
@@ -77,6 +78,11 @@ export default class BoardPresenter {
     render(new InfoView(this.#boardTrips), this.#tripControls, RenderPosition.AFTERBEGIN);
     this.#renderSort();
     this.#renderTrips();
+  };
+
+  #handleTripChange = (updatedTrip) => {
+    this.#boardTrips = updateItem(this.#boardTrips, updatedTrip);
+    this.#tripPresenter.get(updatedTrip.id).init(updatedTrip);
   };
 
   #clearTaskList = () => {

@@ -1,4 +1,4 @@
-import {replace, render} from '../framework/render';
+import {replace, render, remove} from '../framework/render';
 import RoutePointView from '../view/route-point';
 import NewFormView from '../view/new-form';
 
@@ -7,9 +7,11 @@ export default class TripPresenter {
   #tripComponent = null;
   #tripEditComponent = null;
   #trip = null;
+  #changeData = null;
 
-  constructor(tripListContainer) {
+  constructor(tripListContainer, changeData) {
     this.#tripListContainer = tripListContainer;
+    this.#changeData = changeData;
   }
 
   init = (trip) => {
@@ -22,6 +24,7 @@ export default class TripPresenter {
     this.#tripEditComponent = new NewFormView(trip);
 
     this.#tripComponent.setEditClickHandler(this.#handleEditClick);
+    this.#tripComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#tripEditComponent.setSaveFormHandler(this.#handleSaveForm);
 
     if (prevTripComponent === null || prevTripEditComponent === null) {
@@ -39,8 +42,6 @@ export default class TripPresenter {
 
     remove(prevTripComponent);
     remove(prevTripEditComponent);
-
-    render(this.#tripComponent, this.#tripListContainer);
   };
 
   destroy = () => {
@@ -70,7 +71,12 @@ export default class TripPresenter {
     this.#replaceRouteToForm();
   };
 
-  #handleSaveForm = () => {
+  #handleSaveForm = (trip) => {
+    this.#changeData(trip);
     this.#replaceFormToRoute();
+  };
+
+  #handleFavoriteClick = () => {
+    this.#changeData({...this.#trip, isFavorite: !this.#trip.isFavorite});
   };
 }
