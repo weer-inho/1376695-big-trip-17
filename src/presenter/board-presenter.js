@@ -20,6 +20,8 @@ export default class BoardPresenter {
   #filterComponent = new FilterView();
   #listComponent = new TripEventsListView();
 
+  #tripPresenter = new Map();
+
   constructor(boardContainer, tripsModel) {
     this.#boardContainer = boardContainer;
     this.#tripsModel = tripsModel;
@@ -50,6 +52,7 @@ export default class BoardPresenter {
   #renderTrip = (trip) => {
     const tripPresenter = new TripPresenter(this.#tripEventsList);
     tripPresenter.init(trip);
+    this.#tripPresenter.set(trip.id, tripPresenter);
   };
 
   #renderTrips = () => {
@@ -74,5 +77,10 @@ export default class BoardPresenter {
     render(new InfoView(this.#boardTrips), this.#tripControls, RenderPosition.AFTERBEGIN);
     this.#renderSort();
     this.#renderTrips();
+  };
+
+  #clearTaskList = () => {
+    this.#tripPresenter.forEach((presenter) => presenter.destroy());
+    this.#tripPresenter.clear();
   };
 }

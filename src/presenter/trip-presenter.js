@@ -43,6 +43,11 @@ export default class TripPresenter {
     render(this.#tripComponent, this.#tripListContainer);
   };
 
+  destroy = () => {
+    remove(this.#tripComponent);
+    remove(this.#tripEditComponent);
+  };
+
   #replaceRouteToForm = () => {
     replace(this.#tripEditComponent, this.#tripComponent);
     document.addEventListener('keydown', this.#onEscKeyDown);
