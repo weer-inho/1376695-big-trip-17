@@ -5,7 +5,7 @@ import EmptyView from '../view/empty';
 import TripEventsListView from '../view/trip-events-list';
 import TripPresenter from './trip-presenter';
 import {render, RenderPosition} from '../framework/render';
-import {updateItem} from "../utils";
+import {updateItem} from '../utils';
 
 export default class BoardPresenter {
   #tripsModel = null;
