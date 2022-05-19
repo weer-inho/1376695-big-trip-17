@@ -2,9 +2,8 @@ import FilterView from '../view/filters';
 import InfoView from '../view/trip-info';
 import SortView from '../view/sort';
 import EmptyView from '../view/empty';
-import RoutePointView from '../view/route-point';
-import NewFormView from '../view/new-form';
 import TripEventsListView from '../view/trip-events-list';
+import TripPresenter from './trip-presenter';
 import {render, RenderPosition} from '../framework/render';
 
 export default class BoardPresenter {
@@ -49,36 +48,8 @@ export default class BoardPresenter {
   };
 
   #renderTrip = (trip) => {
-    const tripEditComponent = new NewFormView(trip);
-    const tripComponent = new RoutePointView(trip);
-
-    const replaceRouteToForm = () => {
-      this.#tripEventsList.replaceChild(tripEditComponent.element, tripComponent.element);
-    };
-
-    const replaceFormToRoute = () => {
-      this.#tripEventsList.replaceChild(tripComponent.element, tripEditComponent.element);
-    };
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        replaceFormToRoute();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
-    tripComponent.setEditClickHandler(() => {
-      replaceRouteToForm();
-      document.addEventListener('keydown', onEscKeyDown);
-    });
-
-    tripEditComponent.setSaveFormHandler(() => {
-      replaceFormToRoute();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-
-    render(tripComponent, this.#tripEventsList);
+    const tripPresenter = new TripPresenter(this.#tripEventsList);
+    tripPresenter.init(trip);
   };
 
   #renderTrips = () => {
