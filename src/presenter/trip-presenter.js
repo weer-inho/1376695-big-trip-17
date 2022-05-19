@@ -41,11 +41,11 @@ export default class TripPresenter {
       return;
     }
 
-    if (this.#tripListContainer.contains(prevTripComponent.element)) {
+    if (this.#mode === Mode.DEFAULT) {
       replace(this.#tripComponent, prevTripComponent);
     }
 
-    if (this.#tripListContainer.contains(prevTripEditComponent.element)) {
+    if (this.#mode === Mode.EDITING) {
       replace(this.#tripEditComponent, prevTripEditComponent);
     }
 
@@ -67,11 +67,14 @@ export default class TripPresenter {
   #replaceRouteToForm = () => {
     replace(this.#tripEditComponent, this.#tripComponent);
     document.addEventListener('keydown', this.#onEscKeyDown);
+    this.#changeMode();
+    this.#mode = Mode.EDITING;
   };
 
   #replaceFormToRoute = () => {
     replace(this.#tripComponent, this.#tripEditComponent);
     document.removeEventListener('keydown', this.#onEscKeyDown);
+    this.#mode = Mode.DEFAULT;
   };
 
   #onEscKeyDown = (evt) => {
