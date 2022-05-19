@@ -2,16 +2,25 @@ import {replace, render, remove} from '../framework/render';
 import RoutePointView from '../view/route-point';
 import NewFormView from '../view/new-form';
 
+const Mode = {
+  'DEFAULT': 'DEFAULT',
+  'EDITING': 'EDITING',
+};
+
 export default class TripPresenter {
   #tripListContainer = null;
   #tripComponent = null;
   #tripEditComponent = null;
   #trip = null;
   #changeData = null;
+  #changeMode = null;
 
-  constructor(tripListContainer, changeData) {
+  #mode = Mode.DEFAULT;
+
+  constructor(tripListContainer, changeData, changeMode) {
     this.#tripListContainer = tripListContainer;
     this.#changeData = changeData;
+    this.#changeMode = changeMode;
   }
 
   init = (trip) => {
@@ -42,6 +51,12 @@ export default class TripPresenter {
 
     remove(prevTripComponent);
     remove(prevTripEditComponent);
+  };
+
+  resetView = () => {
+    if (this.#mode !== Mode.DEFAULT) {
+      this.#replaceFormToRoute();
+    }
   };
 
   destroy = () => {

@@ -51,7 +51,7 @@ export default class BoardPresenter {
   };
 
   #renderTrip = (trip) => {
-    const tripPresenter = new TripPresenter(this.#tripEventsList, this.#handleTripChange);
+    const tripPresenter = new TripPresenter(this.#tripEventsList, this.#handleTripChange, this.#handleModeChange());
     tripPresenter.init(trip);
     this.#tripPresenter.set(trip.id, tripPresenter);
   };
@@ -83,6 +83,10 @@ export default class BoardPresenter {
   #handleTripChange = (updatedTrip) => {
     this.#boardTrips = updateItem(this.#boardTrips, updatedTrip);
     this.#tripPresenter.get(updatedTrip.id).init(updatedTrip);
+  };
+
+  #handleModeChange = () => {
+    this.#tripPresenter.forEach((presenter) => presenter.resetView());
   };
 
   #clearTaskList = () => {
