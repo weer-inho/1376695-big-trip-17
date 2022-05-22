@@ -217,6 +217,6 @@ export default class NewFormView extends AbstractView {
 
   #saveFormHandler = (evt) => {
     evt.preventDefault();
-    this._callback.saveForm();
+    this._callback.saveForm(this.#trip);
   };
 }

@@ -2,10 +2,10 @@ import FilterView from '../view/filters';
 import InfoView from '../view/trip-info';
 import SortView from '../view/sort';
 import EmptyView from '../view/empty';
-import RoutePointView from '../view/route-point';
-import NewFormView from '../view/new-form';
 import TripEventsListView from '../view/trip-events-list';
+import TripPresenter from './trip-presenter';
 import {render, RenderPosition} from '../framework/render';
+import {updateItem} from '../utils';
 
 export default class BoardPresenter {
   #tripsModel = null;
@@ -15,6 +15,13 @@ export default class BoardPresenter {
   #tripControlsFilters = null;
   #tripEvents = null;
   #tripEventsList = null;
+
+  #sortComponent = new SortView();
+  #emptyComponent = new EmptyView();
+  #filterComponent = new FilterView();
+  #listComponent = new TripEventsListView();
+
+  #tripPresenter = new Map();
 
   constructor(boardContainer, tripsModel) {
     this.#boardContainer = boardContainer;
@@ -27,56 +34,63 @@ export default class BoardPresenter {
     this.#renderBoard();
   };
 
+  #renderEventsList = () => {
+    render(this.#listComponent, this.#tripEvents);
+  };
+
+  #renderFilter = () => {
+    render(this.#filterComponent, this.#tripControlsFilters);
+  };
+
+  #renderSort = () => {
+    render(this.#sortComponent, this.#tripEvents);
+  };
+
+  #renderEmpty = () => {
+    render(this.#emptyComponent, this.#tripEvents);
+  };
+
   #renderTrip = (trip) => {
-    const tripEditComponent = new NewFormView(trip);
-    const tripComponent = new RoutePointView(trip);
+    const tripPresenter = new TripPresenter(this.#tripEventsList, this.#handleTripChange, this.#handleModeChange);
+    tripPresenter.init(trip);
+    this.#tripPresenter.set(trip.id, tripPresenter);
+  };
 
-    const replaceRouteToForm = () => {
-      this.#tripEventsList.replaceChild(tripEditComponent.element, tripComponent.element);
-    };
-
-    const replaceFormToRoute = () => {
-      this.#tripEventsList.replaceChild(tripComponent.element, tripEditComponent.element);
-    };
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        replaceFormToRoute();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
-    tripComponent.setEditClickHandler(() => {
-      replaceRouteToForm();
-      document.addEventListener('keydown', onEscKeyDown);
-    });
-
-    tripEditComponent.setSaveFormHandler(() => {
-      replaceFormToRoute();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-
-    render(tripComponent, this.#tripEventsList);
+  #renderTrips = () => {
+    this.#renderEventsList();
+    this.#tripEventsList = this.#tripEvents.querySelector('.trip-events__list');
+    for (let i = 0; i < this.#boardTrips.length; i++) {
+      this.#renderTrip(this.#boardTrips[i]);
+    }
   };
 
   #renderBoard = () => {
     this.#tripControls = this.#boardContainer.querySelector('.trip-main');
     this.#tripControlsFilters = this.#tripControls.querySelector('.trip-controls__filters');
-
     this.#tripEvents = this.#boardContainer.querySelector('.trip-events');
 
-    render(new FilterView(), this.#tripControlsFilters);
+    this.#renderFilter();
+
     if (this.#boardTrips.length === 0) {
-      render(new EmptyView(), this.#tripEvents);
+      this.#renderEmpty();
       return;
     }
     render(new InfoView(this.#boardTrips), this.#tripControls, RenderPosition.AFTERBEGIN);
-    render(new SortView(), this.#tripEvents);
-    render(new TripEventsListView(), this.#tripEvents);
-    this.#tripEventsList = this.#tripEvents.querySelector('.trip-events__list');
-    for (let i = 0; i < this.#boardTrips.length; i++) {
-      this.#renderTrip(this.#boardTrips[i]);
-    }
+    this.#renderSort();
+    this.#renderTrips();
+  };
+
+  #handleTripChange = (updatedTrip) => {
+    this.#boardTrips = updateItem(this.#boardTrips, updatedTrip);
+    this.#tripPresenter.get(updatedTrip.id).init(updatedTrip);
+  };
+
+  #handleModeChange = () => {
+    this.#tripPresenter.forEach((presenter) => presenter.resetView());
+  };
+
+  #clearTaskList = () => {
+    this.#tripPresenter.forEach((presenter) => presenter.destroy());
+    this.#tripPresenter.clear();
   };
 }
