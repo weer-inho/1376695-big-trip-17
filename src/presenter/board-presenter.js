@@ -44,6 +44,7 @@ export default class BoardPresenter {
 
   #renderSort = () => {
     render(this.#sortComponent, this.#tripEvents);
+    this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
   };
 
   #renderEmpty = () => {
@@ -89,7 +90,13 @@ export default class BoardPresenter {
     this.#tripPresenter.forEach((presenter) => presenter.resetView());
   };
 
-  #clearTaskList = () => {
+  #handleSortTypeChange = (sortType) => {
+    // - Сортируем задачи
+    // - Очищаем список
+    // - Рендерим список заново
+  };
+
+  #clearTripList = () => {
     this.#tripPresenter.forEach((presenter) => presenter.destroy());
     this.#tripPresenter.clear();
   };

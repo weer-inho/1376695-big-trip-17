@@ -66,3 +66,23 @@ export const updateItem = (items, update) => {
     ...items.slice(index + 1),
   ];
 };
+
+export const sortTime = (timeA, timeB) => {
+  if (dayjs(timeA.endDate).diff(timeA.startDate, 'm') < dayjs(timeB.endDate).diff(timeB.startDate, 'm')) {
+    return 1;
+  }
+  if (dayjs(timeA.endDate).diff(timeA.startDate, 'm') > dayjs(timeB.endDate).diff(timeB.startDate, 'm')) {
+    return -1;
+  }
+  return 0;
+};
+
+export const sortPrice = (priceA, priceB) => {
+  if (priceA.price < priceB.price) {
+    return 1;
+  }
+  if (priceA.price > priceB.price) {
+    return -1;
+  }
+  return 0;
+};
