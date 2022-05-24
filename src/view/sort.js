@@ -46,6 +46,5 @@ export default class SortView extends AbstractView {
 
     evt.preventDefault();
     this._callback.sortTypeChange(evt.target.dataset.sortType);
-    console.log(evt.target.dataset.sortType);
   };
 }

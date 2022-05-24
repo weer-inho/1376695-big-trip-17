@@ -5,11 +5,13 @@ import EmptyView from '../view/empty';
 import TripEventsListView from '../view/trip-events-list';
 import TripPresenter from './trip-presenter';
 import {render, RenderPosition} from '../framework/render';
-import {updateItem} from '../utils';
+import {updateItem, sortPrice, sortTime} from '../utils';
+import {SortType} from '../const';
 
 export default class BoardPresenter {
   #tripsModel = null;
   #boardTrips = null;
+  #sourcedBoardTrips = null;
   #boardContainer = null;
   #tripControls = null;
   #tripControlsFilters = null;
@@ -21,6 +23,7 @@ export default class BoardPresenter {
   #filterComponent = new FilterView();
   #listComponent = new TripEventsListView();
 
+  #currentSortType = SortType.DEFAULT;
   #tripPresenter = new Map();
 
   constructor(boardContainer, tripsModel) {
@@ -30,6 +33,7 @@ export default class BoardPresenter {
 
   init = () => {
     this.#boardTrips = [...this.#tripsModel.trips];
+    this.#sourcedBoardTrips = [...this.#tripsModel.trips];
 
     this.#renderBoard();
   };
@@ -81,6 +85,21 @@ export default class BoardPresenter {
     this.#renderTrips();
   };
 
+  #sortTrips = (sortType) => {
+    switch (sortType) {
+      case SortType.PRICE:
+        this.#boardTrips.sort(sortPrice);
+        break;
+      case SortType.TIME:
+        this.#boardTrips.sort(sortTime);
+        break;
+      case SortType.DEFAULT:
+        this.#boardTrips = [...this.#sourcedBoardTrips];
+        break;
+      default:
+    }
+  };
+
   #handleTripChange = (updatedTrip) => {
     this.#boardTrips = updateItem(this.#boardTrips, updatedTrip);
     this.#tripPresenter.get(updatedTrip.id).init(updatedTrip);
@@ -91,9 +110,13 @@ export default class BoardPresenter {
   };
 
   #handleSortTypeChange = (sortType) => {
-    // - Сортируем задачи
-    // - Очищаем список
-    // - Рендерим список заново
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+    this.#sortTrips(sortType);
+    this.#clearTripList();
+    this.#renderTrips();
+    this.#currentSortType = sortType;
   };
 
   #clearTripList = () => {
