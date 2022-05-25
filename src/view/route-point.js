@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 
 const createRoutePointTemplate = (trip) => {
   const {type, destination, dateFrom, dateTo, basePrice, offer, isFavorite} = trip;
-  // console.log(trip);
 
   return (
     `<li class="trip-events__item">
