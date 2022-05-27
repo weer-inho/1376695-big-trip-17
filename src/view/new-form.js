@@ -1,5 +1,6 @@
-import AbstractView from '../framework/view/abstract-view';
 import dayjs from 'dayjs';
+import {offers} from '../mock/data';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 
 const BLANK_TRIP = {
   'basePrice': 1653,
@@ -78,7 +79,8 @@ ${photos.map((photo) => `<img class='event__photo' src='${photo.src}' alt='${pho
 `);
 
 const createNewFormTemplate = (trip) => {
-  const {type, destination, dateFrom, dateTo, basePrice, offer} = trip;
+  const {type, destination, dateFrom, dateTo, basePrice} = trip;
+  const offer = offers[type];
 
   return (
     `<li class='trip-events__item'>
@@ -197,17 +199,24 @@ const createNewFormTemplate = (trip) => {
   );
 };
 
-export default class NewFormView extends AbstractView {
-  #trip = null;
+export default class NewFormView extends AbstractStatefulView {
+  _state = null;
 
   constructor(trip = BLANK_TRIP) {
     super();
-    this.#trip = trip;
+    this._state = trip;
+
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#typePointChanged);
   }
 
   get template() {
-    return createNewFormTemplate(this.#trip);
+    return createNewFormTemplate(this._state);
   }
+
+  _restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.setSaveFormHandler(this._callback.saveForm);
+  };
 
   setSaveFormHandler = (callback) => {
     this._callback.saveForm = callback;
@@ -217,6 +226,17 @@ export default class NewFormView extends AbstractView {
 
   #saveFormHandler = (evt) => {
     evt.preventDefault();
-    this._callback.saveForm(this.#trip);
+    this._callback.saveForm(this._state);
+  };
+
+  #setInnerHandlers = () => {
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#typePointChanged);
+  };
+
+  #typePointChanged = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      type: evt.target.value,
+    });
   };
 }
