@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
-import {offers} from '../mock/data';
+import {description, offers} from '../mock/data';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
+import {generatePictures} from '../mock/point';
+import {getRandomInteger} from '../utils';
 
 const BLANK_TRIP = {
   'basePrice': 1653,
@@ -57,11 +59,11 @@ const BLANK_TRIP = {
   ]
 };
 
-const createEventOffers = (offers) => (`<section class='event__section  event__section--offers'>
-  ${(offers.length === 0) ? '' : `
+const createEventOffers = (offersArray) => (`<section class='event__section  event__section--offers'>
+  ${(offersArray.length === 0) ? '' : `
     <h3 class='event__section-title  event__section-title--offers'>Offers</h3>
     <div class='event__available-offers'>
-      ${offers.map((offer) => `<div class='event__offer-selector'>
+      ${offersArray.map((offer) => `<div class='event__offer-selector'>
         <input class='event__offer-checkbox  visually-hidden' id='event-offer' type='checkbox' name='event-offer-${offer.id}'
         ${(offer.selected) ? 'checked' : ''}>
         <label class='event__offer-label' for='event-offer-${offer.id}'>
@@ -206,7 +208,7 @@ export default class NewFormView extends AbstractStatefulView {
     super();
     this._state = trip;
 
-    this.element.querySelector('.event__type-group').addEventListener('change', this.#typePointChanged);
+    this.#setInnerHandlers();
   }
 
   get template() {
@@ -230,7 +232,18 @@ export default class NewFormView extends AbstractStatefulView {
   };
 
   #setInnerHandlers = () => {
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#cityNameChanged);
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typePointChanged);
+  };
+
+  #cityNameChanged = () => {
+    this.updateElement({
+      destination: {
+        destinationDescription: description[getRandomInteger(1, description.length)],
+        name: this._state.destination.name,
+        pictures: generatePictures(),
+      },
+    });
   };
 
   #typePointChanged = (evt) => {
