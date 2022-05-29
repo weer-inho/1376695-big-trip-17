@@ -1,5 +1,8 @@
-import AbstractView from '../framework/view/abstract-view';
 import dayjs from 'dayjs';
+import {description, offers} from '../mock/data';
+import AbstractStatefulView from '../framework/view/abstract-stateful-view';
+import {generatePictures} from '../mock/point';
+import {getRandomInteger} from '../utils';
 
 const BLANK_TRIP = {
   'basePrice': 1653,
@@ -56,11 +59,11 @@ const BLANK_TRIP = {
   ]
 };
 
-const createEventOffers = (offers) => (`<section class='event__section  event__section--offers'>
-  ${(offers.length === 0) ? '' : `
+const createEventOffers = (offersArray) => (`<section class='event__section  event__section--offers'>
+  ${(offersArray.length === 0) ? '' : `
     <h3 class='event__section-title  event__section-title--offers'>Offers</h3>
     <div class='event__available-offers'>
-      ${offers.map((offer) => `<div class='event__offer-selector'>
+      ${offersArray.map((offer) => `<div class='event__offer-selector'>
         <input class='event__offer-checkbox  visually-hidden' id='event-offer' type='checkbox' name='event-offer-${offer.id}'
         ${(offer.selected) ? 'checked' : ''}>
         <label class='event__offer-label' for='event-offer-${offer.id}'>
@@ -78,7 +81,8 @@ ${photos.map((photo) => `<img class='event__photo' src='${photo.src}' alt='${pho
 `);
 
 const createNewFormTemplate = (trip) => {
-  const {type, destination, dateFrom, dateTo, basePrice, offer} = trip;
+  const {type, destination, dateFrom, dateTo, basePrice} = trip;
+  const offer = offers[type];
 
   return (
     `<li class='trip-events__item'>
@@ -96,47 +100,47 @@ const createNewFormTemplate = (trip) => {
                 <legend class='visually-hidden'>Event type</legend>
 
                 <div class='event__type-item'>
-                  <input id='event-type-taxi-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='taxi'>
+                  <input id='event-type-taxi-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='taxi' ${type === 'taxi' ? 'checked' : ''}>
                   <label class='event__type-label  event__type-label--taxi' for='event-type-taxi-1'>Taxi</label>
                 </div>
 
                 <div class='event__type-item'>
-                  <input id='event-type-bus-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='bus'>
+                  <input id='event-type-bus-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='bus' ${type === 'bus' ? 'checked' : ''}>
                   <label class='event__type-label  event__type-label--bus' for='event-type-bus-1'>Bus</label>
                 </div>
 
                 <div class='event__type-item'>
-                  <input id='event-type-train-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='train'>
+                  <input id='event-type-train-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='train' ${type === 'train' ? 'checked' : ''}>
                   <label class='event__type-label  event__type-label--train' for='event-type-train-1'>Train</label>
                 </div>
 
                 <div class='event__type-item'>
-                  <input id='event-type-ship-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='ship'>
+                  <input id='event-type-ship-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='ship' ${type === 'ship' ? 'checked' : ''}>
                   <label class='event__type-label  event__type-label--ship' for='event-type-ship-1'>Ship</label>
                 </div>
 
                 <div class='event__type-item'>
-                  <input id='event-type-drive-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='drive'>
+                  <input id='event-type-drive-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='drive' ${type === 'drive' ? 'checked' : ''}>
                   <label class='event__type-label  event__type-label--drive' for='event-type-drive-1'>Drive</label>
                 </div>
 
                 <div class='event__type-item'>
-                  <input id='event-type-flight-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='flight' checked>
+                  <input id='event-type-flight-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='flight' ${type === 'flight' ? 'checked' : ''}>
                   <label class='event__type-label  event__type-label--flight' for='event-type-flight-1'>Flight</label>
                 </div>
 
                 <div class='event__type-item'>
-                  <input id='event-type-check-in-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='check-in'>
+                  <input id='event-type-check-in-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='check-in' ${type === 'check-in' ? 'checked' : ''}>
                   <label class='event__type-label  event__type-label--check-in' for='event-type-check-in-1'>Check-in</label>
                 </div>
 
                 <div class='event__type-item'>
-                  <input id='event-type-sightseeing-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='sightseeing'>
+                  <input id='event-type-sightseeing-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='sightseeing' ${type === 'sightseeing' ? 'checked' : ''}>
                   <label class='event__type-label  event__type-label--sightseeing' for='event-type-sightseeing-1'>Sightseeing</label>
                 </div>
 
                 <div class='event__type-item'>
-                  <input id='event-type-restaurant-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='restaurant'>
+                  <input id='event-type-restaurant-1' class='event__type-input  visually-hidden' type='radio' name='event-type' value='restaurant' ${type === 'restaurant' ? 'checked' : ''}>
                   <label class='event__type-label  event__type-label--restaurant' for='event-type-restaurant-1'>Restaurant</label>
                 </div>
               </fieldset>
@@ -197,17 +201,24 @@ const createNewFormTemplate = (trip) => {
   );
 };
 
-export default class NewFormView extends AbstractView {
-  #trip = null;
+export default class NewFormView extends AbstractStatefulView {
+  _state = null;
 
   constructor(trip = BLANK_TRIP) {
     super();
-    this.#trip = trip;
+    this._state = trip;
+
+    this.#setInnerHandlers();
   }
 
   get template() {
-    return createNewFormTemplate(this.#trip);
+    return createNewFormTemplate(this._state);
   }
+
+  _restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.setSaveFormHandler(this._callback.saveForm);
+  };
 
   setSaveFormHandler = (callback) => {
     this._callback.saveForm = callback;
@@ -217,6 +228,28 @@ export default class NewFormView extends AbstractView {
 
   #saveFormHandler = (evt) => {
     evt.preventDefault();
-    this._callback.saveForm(this.#trip);
+    this._callback.saveForm(this._state);
+  };
+
+  #setInnerHandlers = () => {
+    this.element.querySelector('.event__input--destination').addEventListener('change', this.#cityNameChanged);
+    this.element.querySelector('.event__type-group').addEventListener('change', this.#typePointChanged);
+  };
+
+  #cityNameChanged = () => {
+    this.updateElement({
+      destination: {
+        destinationDescription: description[getRandomInteger(1, description.length)],
+        name: this._state.destination.name,
+        pictures: generatePictures(),
+      },
+    });
+  };
+
+  #typePointChanged = (evt) => {
+    evt.preventDefault();
+    this.updateElement({
+      type: evt.target.value,
+    });
   };
 }
