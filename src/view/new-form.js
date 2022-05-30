@@ -3,6 +3,9 @@ import {description, offers} from '../mock/data';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import {generatePictures} from '../mock/point';
 import {getRandomInteger} from '../utils';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 const BLANK_TRIP = {
   'basePrice': 1653,
@@ -202,13 +205,14 @@ const createNewFormTemplate = (trip) => {
 };
 
 export default class NewFormView extends AbstractStatefulView {
-  _state = null;
+  #datepicker = null;
 
   constructor(trip = BLANK_TRIP) {
     super();
     this._state = trip;
 
     this.#setInnerHandlers();
+    this.#setDatepicker();
   }
 
   get template() {
@@ -217,6 +221,7 @@ export default class NewFormView extends AbstractStatefulView {
 
   _restoreHandlers = () => {
     this.#setInnerHandlers();
+    this.#setDatepicker();
     this.setSaveFormHandler(this._callback.saveForm);
   };
 
@@ -226,9 +231,50 @@ export default class NewFormView extends AbstractStatefulView {
       addEventListener('submit', this.#saveFormHandler);
   };
 
+  removeElement = () => {
+    super.removeElement();
+
+    if (this.#datepicker) {
+      this.#datepicker.destroy();
+      this.#datepicker = null;
+    }
+  };
+
   #saveFormHandler = (evt) => {
     evt.preventDefault();
     this._callback.saveForm(this._state);
+  };
+
+  #setDatepicker = () => {
+    this.#datepicker = flatpickr(
+      this.element.querySelector('.event__input--time[name="event-start-time"]'),
+      {
+        dateFormat: 'd/m/Y H:i',
+        defaultDate: this._state.dateFrom,
+        onChange: this.#dateStartChangeHandler,
+      },
+    );
+
+    this.#datepicker = flatpickr(
+      this.element.querySelector('.event__input--time[name="event-end-time"]'),
+      {
+        dateFormat: 'd/m/Y H:i',
+        defaultDate: this._state.dateTo,
+        onChange: this.#dateEndChangeHandler,
+      },
+    );
+  };
+
+  #dateStartChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateFrom: userDate,
+    });
+  };
+
+  #dateEndChangeHandler = ([userDate]) => {
+    this.updateElement({
+      dateTo: userDate,
+    });
   };
 
   #setInnerHandlers = () => {
