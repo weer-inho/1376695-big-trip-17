@@ -3,6 +3,9 @@ import {description, offers} from '../mock/data';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import {generatePictures} from '../mock/point';
 import {getRandomInteger} from '../utils';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 const BLANK_TRIP = {
   'basePrice': 1653,
