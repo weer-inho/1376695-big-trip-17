@@ -6,7 +6,7 @@ import TripEventsListView from '../view/trip-events-list';
 import TripPresenter from './trip-presenter';
 import {render, RenderPosition} from '../framework/render';
 import {updateItem, sortPrice, sortTime} from '../utils';
-import {SortType} from '../const';
+import {SortType, UpdateType, UserAction} from '../const';
 
 export default class BoardPresenter {
   #tripsModel = null;
@@ -29,6 +29,8 @@ export default class BoardPresenter {
   constructor(boardContainer, tripsModel) {
     this.#boardContainer = boardContainer;
     this.#tripsModel = tripsModel;
+
+    this.#tripsModel.addObserver(this.#handleModelEvent);
   }
 
   get trips() {
@@ -68,7 +70,11 @@ export default class BoardPresenter {
   };
 
   #renderTrip = (trip) => {
-    const tripPresenter = new TripPresenter(this.#tripEventsList, this.#handleTripChange, this.#handleModeChange);
+    const tripPresenter = new TripPresenter(
+      this.#tripEventsList,
+      this.#handleViewAction,
+      this.#handleModeChange,
+    );
     tripPresenter.init(trip);
     this.#tripPresenter.set(trip.id, tripPresenter);
   };
@@ -109,6 +115,35 @@ export default class BoardPresenter {
         this.#boardTrips = [...this.#sourcedBoardTrips];
         break;
       default:
+    }
+  };
+
+  #handleViewAction = (actionType, updateType, update) => {
+    switch (actionType) {
+      case UserAction.UPDATE_TRIP:
+        this.#tripsModel.updateTrip(updateType, update);
+        break;
+      case UserAction.ADD_TRIP:
+        this.#tripsModel.addTrip(updateType, update);
+        break;
+      case UserAction.DELETE_TRIP:
+        this.#tripsModel.deleteTrip(updateType, update);
+        break;
+    }
+  };
+
+  #handleModelEvent = (updateType, data) => {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        // - обновить часть списка (например, когда поменялось описание)
+        this.#tripPresenter.get(data.id).init(data);
+        break;
+      case UpdateType.MINOR:
+        // - обновить список (например, когда задача ушла в архив)
+        break;
+      case UpdateType.MAJOR:
+        // - обновить всю доску (например, при переключении фильтра)
+        break;
     }
   };
 
