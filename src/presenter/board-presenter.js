@@ -32,8 +32,16 @@ export default class BoardPresenter {
   }
 
   get trips() {
+    switch (this.#currentSortType) {
+      case SortType.PRICE:
+        return [...this.#tripsModel.trips].sort(sortPrice);
+      case SortType.TIME:
+        return [...this.#tripsModel.trips].sort(sortTime);
+      case SortType.DEFAULT:
+        return [...this.#tripsModel.trips];
+    }
     return this.#tripsModel.trips;
-  };
+  }
 
   init = () => {
     this.#boardTrips = [...this.#tripsModel.trips];
@@ -68,8 +76,8 @@ export default class BoardPresenter {
   #renderTrips = () => {
     this.#renderEventsList();
     this.#tripEventsList = this.#tripEvents.querySelector('.trip-events__list');
-    for (let i = 0; i < this.#boardTrips.length; i++) {
-      this.#renderTrip(this.#boardTrips[i]);
+    for (let i = 0; i < this.trips.length; i++) {
+      this.#renderTrip(this.trips[i]);
     }
   };
 
@@ -117,10 +125,10 @@ export default class BoardPresenter {
     if (this.#currentSortType === sortType) {
       return;
     }
-    this.#sortTrips(sortType);
+
+    this.#currentSortType = sortType;
     this.#clearTripList();
     this.#renderTrips();
-    this.#currentSortType = sortType;
   };
 
   #clearTripList = () => {
