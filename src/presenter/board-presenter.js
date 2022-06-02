@@ -1,4 +1,3 @@
-import FilterView from '../view/filters';
 import InfoView from '../view/trip-info';
 import SortView from '../view/sort';
 import EmptyView from '../view/empty';
@@ -88,8 +87,6 @@ export default class BoardPresenter {
     this.#tripControls = this.#boardContainer.querySelector('.trip-main');
     this.#tripControlsFilters = this.#tripControls.querySelector('.trip-controls__filters');
     this.#tripEvents = this.#boardContainer.querySelector('.trip-events');
-
-    this.#renderFilter();
 
     if (this.trips.length === 0) {
       this.#renderEmpty();
