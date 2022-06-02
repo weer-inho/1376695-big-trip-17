@@ -4,21 +4,19 @@ import SortView from '../view/sort';
 import EmptyView from '../view/empty';
 import TripEventsListView from '../view/trip-events-list';
 import TripPresenter from './trip-presenter';
-import {render, RenderPosition} from '../framework/render';
+import {render, RenderPosition, remove} from '../framework/render';
 import {updateItem, sortPrice, sortTime} from '../utils';
 import {SortType, UpdateType, UserAction} from '../const';
 
 export default class BoardPresenter {
   #tripsModel = null;
-  #boardTrips = null;
-  #sourcedBoardTrips = null;
   #boardContainer = null;
   #tripControls = null;
   #tripControlsFilters = null;
   #tripEvents = null;
   #tripEventsList = null;
 
-  #sortComponent = new SortView();
+  #sortComponent = null;
   #emptyComponent = new EmptyView();
   #filterComponent = new FilterView();
   #listComponent = new TripEventsListView();
@@ -46,9 +44,6 @@ export default class BoardPresenter {
   }
 
   init = () => {
-    this.#boardTrips = [...this.#tripsModel.trips];
-    this.#sourcedBoardTrips = [...this.#tripsModel.trips];
-
     this.#renderBoard();
   };
 
@@ -61,8 +56,9 @@ export default class BoardPresenter {
   };
 
   #renderSort = () => {
-    render(this.#sortComponent, this.#tripEvents);
+    this.#sortComponent = new SortView(this.#currentSortType);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
+    render(this.#sortComponent, this.#tripEvents, RenderPosition.AFTERBEGIN);
   };
 
   #renderEmpty = () => {
@@ -80,7 +76,9 @@ export default class BoardPresenter {
   };
 
   #renderTrips = () => {
-    this.#renderEventsList();
+    if (!(document.contains(document.querySelector('.trip-events__list')))) {
+      this.#renderEventsList();
+    }
     this.#tripEventsList = this.#tripEvents.querySelector('.trip-events__list');
     for (let i = 0; i < this.trips.length; i++) {
       this.#renderTrip(this.trips[i]);
@@ -94,28 +92,13 @@ export default class BoardPresenter {
 
     this.#renderFilter();
 
-    if (this.#boardTrips.length === 0) {
+    if (this.trips.length === 0) {
       this.#renderEmpty();
       return;
     }
-    render(new InfoView(this.#boardTrips), this.#tripControls, RenderPosition.AFTERBEGIN);
+    render(new InfoView(this.trips), this.#tripControls, RenderPosition.AFTERBEGIN);
     this.#renderSort();
     this.#renderTrips();
-  };
-
-  #sortTrips = (sortType) => {
-    switch (sortType) {
-      case SortType.PRICE:
-        this.#boardTrips.sort(sortPrice);
-        break;
-      case SortType.TIME:
-        this.#boardTrips.sort(sortTime);
-        break;
-      case SortType.DEFAULT:
-        this.#boardTrips = [...this.#sourcedBoardTrips];
-        break;
-      default:
-    }
   };
 
   #handleViewAction = (actionType, updateType, update) => {
@@ -135,20 +118,23 @@ export default class BoardPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        // - обновить часть списка (например, когда поменялось описание)
         this.#tripPresenter.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
-        // - обновить список (например, когда задача ушла в архив)
+        this.#clearBoard();
+        this.#renderTrips();
+        this.#renderSort();
         break;
       case UpdateType.MAJOR:
-        // - обновить всю доску (например, при переключении фильтра)
+        this.#clearBoard();
+        this.#renderTrips();
+        this.#renderSort();
         break;
     }
   };
 
   #handleTripChange = (updatedTrip) => {
-    this.#boardTrips = updateItem(this.#boardTrips, updatedTrip);
+    this.trips = updateItem(this.trips, updatedTrip);
     this.#tripPresenter.get(updatedTrip.id).init(updatedTrip);
   };
 
@@ -169,5 +155,14 @@ export default class BoardPresenter {
   #clearTripList = () => {
     this.#tripPresenter.forEach((presenter) => presenter.destroy());
     this.#tripPresenter.clear();
+  };
+
+  #clearBoard = () => {
+    this.#tripPresenter.forEach((presenter) => presenter.destroy());
+    this.#tripPresenter.clear();
+
+    remove(this.#sortComponent);
+    remove(this.#emptyComponent);
+    this.#currentSortType = SortType.DEFAULT;
   };
 }

@@ -36,6 +36,7 @@ export default class TripPresenter {
     this.#tripComponent.setEditClickHandler(this.#handleEditClick);
     this.#tripComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#tripEditComponent.setSaveFormHandler(this.#handleSaveForm);
+    this.#tripEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
     if (prevTripComponent === null || prevTripEditComponent === null) {
       render(this.#tripComponent, this.#tripListContainer);
@@ -84,6 +85,14 @@ export default class TripPresenter {
       this.#replaceFormToRoute();
       document.removeEventListener('keydown', this.#onEscKeyDown);
     }
+  };
+
+  #handleDeleteClick = (trip) => {
+    this.#changeData(
+      UserAction.DELETE_TRIP,
+      UpdateType.MINOR,
+      trip
+    );
   };
 
   #handleEditClick = () => {
