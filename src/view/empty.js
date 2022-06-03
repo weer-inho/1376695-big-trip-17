@@ -1,16 +1,16 @@
 import AbstractView from '../framework/view/abstract-view';
 import {FilterType} from '../const';
 
-const NoTasksTextType = {
+const NoTripsTextType = {
   [FilterType.EVERYTHING]: 'Click New Event to create your first',
   [FilterType.PAST]: 'There are no past events now',
   [FilterType.FUTURE]: 'There are no future events now',
 };
 
 const createEmptyTemplate = (filterType) => {
-  const noTaskTextValue = NoTasksTextType[filterType];
+  const noTripTextValue = NoTripsTextType[filterType];
 
-  return (`<p class="trip-events__msg">${noTaskTextValue}</p>`);
+  return (`<p class="trip-events__msg">${noTripTextValue}</p>`);
 };
 
 export default class EmptyView extends AbstractView {

@@ -39,11 +39,11 @@ export default class BoardPresenter {
 
     switch (this.#currentSortType) {
       case SortType.PRICE:
-        return filteredTrips.sort(sortPrice);
+        return [...filteredTrips].sort(sortPrice);
       case SortType.TIME:
-        return filteredTrips.sort(sortTime);
+        return [...filteredTrips].sort(sortTime);
       case SortType.DEFAULT:
-        return filteredTrips;
+        return [...filteredTrips];
     }
     return this.#tripsModel.trips;
   }
@@ -123,6 +123,7 @@ export default class BoardPresenter {
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderSort();
+        this.#currentSortType = SortType.DEFAULT;
         if (this.trips.length === 0) {
           this.#renderEmpty(this.#filterType);
         } else {
@@ -132,6 +133,7 @@ export default class BoardPresenter {
       case UpdateType.MAJOR:
         this.#clearBoard();
         this.#renderSort();
+        this.#currentSortType = SortType.DEFAULT;
         if (this.trips.length === 0) {
           this.#renderEmpty(this.#filterType);
         } else {
