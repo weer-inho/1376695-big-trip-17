@@ -27,7 +27,7 @@ export default class FilterView extends AbstractView {
   constructor(currentFilterType) {
     super();
     this.#currentFilterType = currentFilterType;
-  };
+  }
 
   get template() {
     return createFitlersTemplate(this.#currentFilterType);

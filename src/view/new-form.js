@@ -175,7 +175,7 @@ const createNewFormTemplate = (trip) => {
               <span class='visually-hidden'>Price</span>
               &euro; ${basePrice}
             </label>
-            <input class='event__input  event__input--price' id='event-price-1' type='text' name='event-price' value=''>
+            <input class='event__input  event__input--price' id='event-price-1' type='number' name='event-price' value=''>
           </div>
 
           <button class='event__save-btn  btn  btn--blue' type='submit'>Save</button>
@@ -223,7 +223,7 @@ export default class NewFormView extends AbstractStatefulView {
     this.#setInnerHandlers();
     this.#setDatepicker();
     this.setSaveFormHandler(this._callback.saveForm);
-    this.setDeleteClickHandler(this._callback.deleteClick)
+    this.setDeleteClickHandler(this._callback.deleteClick);
   };
 
   setSaveFormHandler = (callback) => {
