@@ -36,8 +36,6 @@ export default class BoardPresenter {
   get trips() {
     this.#filterType = this.#filterModel.filter;
     const trips = this.#tripsModel.trips;
-
-    console.log(trips);
     const filteredTrips = filter[this.#filterType](trips);
 
     switch (this.#currentSortType) {
@@ -98,6 +96,7 @@ export default class BoardPresenter {
       this.#renderEmpty();
       return;
     }
+
     render(new InfoView(this.trips), this.#tripControls, RenderPosition.AFTERBEGIN);
     this.#renderSort();
     this.#renderTrips();
@@ -124,13 +123,21 @@ export default class BoardPresenter {
         break;
       case UpdateType.MINOR:
         this.#clearBoard();
-        this.#renderTrips();
         this.#renderSort();
+        if (this.trips.length === 0) {
+          this.#renderEmpty();
+        } else {
+          this.#renderTrips();
+        }
         break;
       case UpdateType.MAJOR:
         this.#clearBoard();
-        this.#renderTrips();
         this.#renderSort();
+        if (this.trips.length === 0) {
+          this.#renderEmpty();
+        } else {
+          this.#renderTrips();
+        }
         break;
     }
   };
