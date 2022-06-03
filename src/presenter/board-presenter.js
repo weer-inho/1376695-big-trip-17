@@ -17,7 +17,6 @@ export default class BoardPresenter {
   #filterModel = null;
 
   #sortComponent = null;
-  #emptyComponent = new EmptyView();
   #listComponent = new TripEventsListView();
 
   #currentSortType = SortType.DEFAULT;
@@ -63,8 +62,8 @@ export default class BoardPresenter {
     render(this.#sortComponent, this.#tripEvents, RenderPosition.AFTERBEGIN);
   };
 
-  #renderEmpty = () => {
-    render(this.#emptyComponent, this.#tripEvents);
+  #renderEmpty = (filterType) => {
+    render(new EmptyView(filterType), this.#tripEvents);
   };
 
   #renderTrip = (trip) => {
@@ -93,7 +92,7 @@ export default class BoardPresenter {
     this.#tripEvents = this.#boardContainer.querySelector('.trip-events');
 
     if (this.trips.length === 0) {
-      this.#renderEmpty();
+      this.#renderEmpty(this.#filterType);
       return;
     }
 
@@ -125,7 +124,7 @@ export default class BoardPresenter {
         this.#clearBoard();
         this.#renderSort();
         if (this.trips.length === 0) {
-          this.#renderEmpty();
+          this.#renderEmpty(this.#filterType);
         } else {
           this.#renderTrips();
         }
@@ -134,7 +133,7 @@ export default class BoardPresenter {
         this.#clearBoard();
         this.#renderSort();
         if (this.trips.length === 0) {
-          this.#renderEmpty();
+          this.#renderEmpty(this.#filterType);
         } else {
           this.#renderTrips();
         }
@@ -171,7 +170,6 @@ export default class BoardPresenter {
     this.#tripPresenter.clear();
 
     remove(this.#sortComponent);
-    remove(this.#emptyComponent);
     this.#currentSortType = SortType.DEFAULT;
   };
 }
