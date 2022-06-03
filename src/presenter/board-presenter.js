@@ -4,7 +4,7 @@ import EmptyView from '../view/empty';
 import TripEventsListView from '../view/trip-events-list';
 import TripPresenter from './trip-presenter';
 import {render, RenderPosition, remove} from '../framework/render';
-import {updateItem, sortPrice, sortTime} from '../utils';
+import {updateItem, sortPrice, sortTime, filter} from '../utils';
 import {SortType, UpdateType, UserAction, FilterType} from '../const';
 
 export default class BoardPresenter {
@@ -14,29 +14,39 @@ export default class BoardPresenter {
   #tripControlsFilters = null;
   #tripEvents = null;
   #tripEventsList = null;
+  #filterModel = null;
 
   #sortComponent = null;
   #emptyComponent = new EmptyView();
   #listComponent = new TripEventsListView();
 
   #currentSortType = SortType.DEFAULT;
+  #filterType = FilterType.EVERYTHING;
   #tripPresenter = new Map();
 
-  constructor(boardContainer, tripsModel) {
+  constructor(boardContainer, tripsModel, filterModel) {
     this.#boardContainer = boardContainer;
     this.#tripsModel = tripsModel;
+    this.#filterModel = filterModel;
 
     this.#tripsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get trips() {
+    this.#filterType = this.#filterModel.filter;
+    const trips = this.#tripsModel.trips;
+
+    console.log(trips);
+    const filteredTrips = filter[this.#filterType](trips);
+
     switch (this.#currentSortType) {
       case SortType.PRICE:
-        return [...this.#tripsModel.trips].sort(sortPrice);
+        return filteredTrips.sort(sortPrice);
       case SortType.TIME:
-        return [...this.#tripsModel.trips].sort(sortTime);
+        return filteredTrips.sort(sortTime);
       case SortType.DEFAULT:
-        return [...this.#tripsModel.trips];
+        return filteredTrips;
     }
     return this.#tripsModel.trips;
   }
@@ -47,10 +57,6 @@ export default class BoardPresenter {
 
   #renderEventsList = () => {
     render(this.#listComponent, this.#tripEvents);
-  };
-
-  #renderFilter = () => {
-    render(new FilterView(FilterType.EVERYTHING), this.#tripControlsFilters);
   };
 
   #renderSort = () => {

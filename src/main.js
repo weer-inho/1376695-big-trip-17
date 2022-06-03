@@ -9,7 +9,7 @@ const tripsModel = new TripsModel();
 const body = document.querySelector('.page-body');
 
 const filterPresenter = new FilterPresenter(body, filterModel, tripsModel);
-const boardPresenter = new BoardPresenter(body, tripsModel);
+const boardPresenter = new BoardPresenter(body, tripsModel, filterModel);
 
 filterPresenter.init();
 boardPresenter.init();
