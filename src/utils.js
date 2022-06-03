@@ -88,14 +88,14 @@ export const sortPrice = (priceA, priceB) => {
   return 0;
 };
 
-const isTaskPast = (dueDate) => dueDate && dayjs().isBefore(dueDate, 'D');
+const isTripPast = (dueDate) => dueDate && dayjs().isBefore(dueDate, 'D');
 
-const isTaskFuture = (dueDate) => dueDate && dayjs().isAfter(dueDate, 'D');
+const isTripFuture = (dueDate) => dueDate && dayjs().isAfter(dueDate, 'D');
 
 const filter = {
   [FilterType.EVERYTHING]: (trips) => trips,
-  [FilterType.PAST]: (trips) => trips.filter((trip) => isTaskPast(trip.dateTo)),
-  [FilterType.FUTURE]: (trips) => trips.filter((trip) => isTaskFuture(trip.dateTo)),
+  [FilterType.PAST]: (trips) => trips.filter((trip) => isTripPast(trip.dateTo)),
+  [FilterType.FUTURE]: (trips) => trips.filter((trip) => isTripFuture(trip.dateTo)),
 };
 
 export {filter};

@@ -6,6 +6,7 @@ import TripPresenter from './trip-presenter';
 import {render, RenderPosition, remove} from '../framework/render';
 import {updateItem, sortPrice, sortTime, filter} from '../utils';
 import {SortType, UpdateType, UserAction, FilterType} from '../const';
+import TripNewPresenter from './trip-new-presenter';
 
 export default class BoardPresenter {
   #tripsModel = null;
@@ -17,6 +18,7 @@ export default class BoardPresenter {
   #filterModel = null;
 
   #sortComponent = null;
+  #tripNewPresenter = null;
   #listComponent = new TripEventsListView();
 
   #currentSortType = SortType.DEFAULT;
@@ -27,6 +29,8 @@ export default class BoardPresenter {
     this.#boardContainer = boardContainer;
     this.#tripsModel = tripsModel;
     this.#filterModel = filterModel;
+
+    this.#tripNewPresenter = new TripNewPresenter(this.#boardContainer, this.#handleViewAction);
 
     this.#tripsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -50,6 +54,12 @@ export default class BoardPresenter {
 
   init = () => {
     this.#renderBoard();
+  };
+
+  createTrip = (callback) => {
+    this.#currentSortType = SortType.DEFAULT;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#tripNewPresenter.init(callback);
   };
 
   #renderEventsList = () => {
