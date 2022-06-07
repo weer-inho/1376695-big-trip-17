@@ -1,4 +1,5 @@
 import {generatePoint} from '../mock/point';
+import {offers} from '../mock/data';
 import Observable from '../framework/observable';
 
 export default class TripsModel extends Observable {
@@ -10,7 +11,7 @@ export default class TripsModel extends Observable {
     this.#tripsApiService = tripsApiService;
 
     this.#tripsApiService.trips.then((trips) => {
-      console.log(trips);
+      console.log(trips.map(this.#adaptToClient));
     });
   }
 
@@ -56,5 +57,23 @@ export default class TripsModel extends Observable {
     ];
 
     this._notify(updateType);
+  };
+
+  #adaptToClient = (trip) => {
+    const adaptedTrip = {
+      ...trip,
+      dateFrom: trip['date_from'],
+      dateTo: trip['date_to'],
+      basePrice: trip['base_price'],
+      isFavorite: trip['is_favorite'],
+      offers: offers[trip.type],
+    };
+
+    delete adaptedTrip['date_from'];
+    delete adaptedTrip['date_to'];
+    delete adaptedTrip['base_price'];
+    delete adaptedTrip['is_favorite'];
+
+    return adaptedTrip;
   };
 }
