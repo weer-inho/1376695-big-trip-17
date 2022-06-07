@@ -1,23 +1,29 @@
-import {generatePoint} from '../mock/point';
 import {offers} from '../mock/data';
 import Observable from '../framework/observable';
 
 export default class TripsModel extends Observable {
   #tripsApiService = null;
-  #trips = Array.from({length: 5}, generatePoint);
+  #trips = [];
 
   constructor(tripsApiService) {
     super();
     this.#tripsApiService = tripsApiService;
-
-    this.#tripsApiService.trips.then((trips) => {
-      console.log(trips.map(this.#adaptToClient));
-    });
   }
 
   get trips() {
     return this.#trips;
   }
+
+  init = async () => {
+    try {
+      const trips = await this.#tripsApiService.trips;
+      this.#trips = trips.map(this.#adaptToClient);
+    } catch (err) {
+      this.#trips = [];
+    }
+
+    console.log(this.#trips);
+  };
 
   updateTrip = (updateType, update) => {
     const index = this.#trips.findIndex((trip) => trip.id === update.id);

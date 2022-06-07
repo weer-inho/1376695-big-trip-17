@@ -32,3 +32,4 @@ newTripButtonComponent.setClickHandler(handleNewTripButtonClick);
 
 filterPresenter.init();
 boardPresenter.init();
+tripsModel.init();
