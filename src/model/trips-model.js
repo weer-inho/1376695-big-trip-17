@@ -2,7 +2,17 @@ import {generatePoint} from '../mock/point';
 import Observable from '../framework/observable';
 
 export default class TripsModel extends Observable {
+  #tripsApiService = null;
   #trips = Array.from({length: 5}, generatePoint);
+
+  constructor(tripsApiService) {
+    super();
+    this.#tripsApiService = tripsApiService;
+
+    this.#tripsApiService.trips.then((trips) => {
+      console.log(trips);
+    });
+  }
 
   get trips() {
     return this.#trips;
