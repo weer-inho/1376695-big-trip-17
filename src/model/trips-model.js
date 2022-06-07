@@ -5,6 +5,8 @@ import {UpdateType} from '../const';
 export default class TripsModel extends Observable {
   #tripsApiService = null;
   #trips = [];
+  // #offers = [];
+  // #destinations = [];
 
   constructor(tripsApiService) {
     super();
@@ -19,11 +21,12 @@ export default class TripsModel extends Observable {
     try {
       const trips = await this.#tripsApiService.trips;
       this.#trips = trips.map(this.#adaptToClient);
+      // this.#offers = await this.#tripsApiService.serverOffers;
+      // this.#destinations = await this.#tripsApiService.serverDestinations;
     } catch (err) {
       this.#trips = [];
     }
 
-    console.log(this.#trips);
     this._notify(UpdateType.INIT);
   };
 

@@ -11,6 +11,16 @@ export default class TripsApiService extends ApiService {
       .then(ApiService.parseResponse);
   }
 
+  get serverDestinations() {
+    return this._load({url: 'destinations'})
+      .then(ApiService.parseResponse);
+  }
+
+  get serverOffers() {
+    return this._load({url: 'offers'})
+      .then(ApiService.parseResponse);
+  }
+
   updateTrip = async (trip) => {
     const response = await this._load({
       url: `points/${trip.id}`,

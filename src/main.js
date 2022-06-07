@@ -27,9 +27,9 @@ const handleNewTripButtonClick = () => {
   newTripButtonComponent.element.disabled = true;
 };
 
-render(newTripButtonComponent, body.querySelector('.trip-main'));
-newTripButtonComponent.setClickHandler(handleNewTripButtonClick);
-
 filterPresenter.init();
 boardPresenter.init();
-tripsModel.init();
+tripsModel.init().finally(() => {
+  render(newTripButtonComponent, body.querySelector('.trip-main'));
+  newTripButtonComponent.setClickHandler(handleNewTripButtonClick);
+});
