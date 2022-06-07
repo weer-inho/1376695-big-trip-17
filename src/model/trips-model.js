@@ -1,5 +1,6 @@
 import {offers} from '../mock/data';
 import Observable from '../framework/observable';
+import {UpdateType} from '../const';
 
 export default class TripsModel extends Observable {
   #tripsApiService = null;
@@ -23,6 +24,7 @@ export default class TripsModel extends Observable {
     }
 
     console.log(this.#trips);
+    this._notify(UpdateType.INIT);
   };
 
   updateTrip = (updateType, update) => {
