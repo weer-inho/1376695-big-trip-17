@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {FilterType} from './const';
 
 export const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -86,3 +87,15 @@ export const sortPrice = (priceA, priceB) => {
   }
   return 0;
 };
+
+const isTripPast = (dueDate) => dueDate && dayjs().isBefore(dueDate, 'D');
+
+const isTripFuture = (dueDate) => dueDate && dayjs().isAfter(dueDate, 'D');
+
+const filter = {
+  [FilterType.EVERYTHING]: (trips) => trips,
+  [FilterType.PAST]: (trips) => trips.filter((trip) => isTripPast(trip.dateTo)),
+  [FilterType.FUTURE]: (trips) => trips.filter((trip) => isTripFuture(trip.dateTo)),
+};
+
+export {filter};

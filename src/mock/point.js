@@ -37,8 +37,8 @@ export const generatePoint = () => {
 
   return {
     basePrice: getRandomInteger(500, 10000),
-    dateFrom: dayjs()/*.add(- Math.floor(Math.random()*10000), 'minute')*/.toDate(),
-    dateTo: dayjs().add(+ Math.floor(Math.random()*10000), 'minute').toDate(),
+    dateFrom: dayjs().add(- Math.floor(Math.random() * 10000), 'minute').toDate(),
+    dateTo: dayjs().add(+ Math.floor(Math.random() * 10000), 'minute').toDate(),
     destination: generateDestination(),
     id: nanoid(),
     isFavorite: getRandomInteger(0,1),

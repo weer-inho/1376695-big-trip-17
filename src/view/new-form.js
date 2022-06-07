@@ -175,11 +175,11 @@ const createNewFormTemplate = (trip) => {
               <span class='visually-hidden'>Price</span>
               &euro; ${basePrice}
             </label>
-            <input class='event__input  event__input--price' id='event-price-1' type='text' name='event-price' value=''>
+            <input class='event__input  event__input--price' id='event-price-1' type='number' name='event-price' value=''>
           </div>
 
           <button class='event__save-btn  btn  btn--blue' type='submit'>Save</button>
-          <button class='event__reset-btn' type='reset'>Cancel</button>
+          <button class='event__reset-btn' type='reset'>Delete</button>
         </header>
         <section class='event__details'>
           <section class='event__section  event__section--offers'>
@@ -223,6 +223,7 @@ export default class NewFormView extends AbstractStatefulView {
     this.#setInnerHandlers();
     this.#setDatepicker();
     this.setSaveFormHandler(this._callback.saveForm);
+    this.setDeleteClickHandler(this._callback.deleteClick);
   };
 
   setSaveFormHandler = (callback) => {
@@ -243,6 +244,11 @@ export default class NewFormView extends AbstractStatefulView {
   #saveFormHandler = (evt) => {
     evt.preventDefault();
     this._callback.saveForm(this._state);
+  };
+
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
   };
 
   #setDatepicker = () => {
@@ -297,5 +303,10 @@ export default class NewFormView extends AbstractStatefulView {
     this.updateElement({
       type: evt.target.value,
     });
+  };
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.deleteClick(this._state);
   };
 }
