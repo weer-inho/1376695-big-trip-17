@@ -125,12 +125,15 @@ export default class BoardPresenter {
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_TRIP:
+        this.#tripPresenter.get(update.id).setSaving();
         this.#tripsModel.updateTrip(updateType, update);
         break;
       case UserAction.ADD_TRIP:
+        this.#tripNewPresenter.setSaving();
         this.#tripsModel.addTrip(updateType, update);
         break;
       case UserAction.DELETE_TRIP:
+        this.#tripPresenter.get(update.id).setDeleting();
         this.#tripsModel.deleteTrip(updateType, update);
         break;
     }

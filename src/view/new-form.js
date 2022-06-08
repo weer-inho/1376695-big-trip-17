@@ -97,7 +97,7 @@ ${photos.map((photo) => `<img class='event__photo' src='${photo.src}' alt='${pho
 `);
 
 const createNewFormTemplate = (trip, isDisabled) => {
-  const {type, destination, dateFrom, dateTo, basePrice} = trip;
+  const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting} = trip;
   const offer = offers[type];
 
   return (
@@ -191,8 +191,12 @@ const createNewFormTemplate = (trip, isDisabled) => {
             <input class='event__input  event__input--price' id='event-price-1' type='number' name='event-price' value='' ${isDisabled ? 'disabled' : ''}>
           </div>
 
-          <button class='event__save-btn  btn  btn--blue' type='submit' ${isDisabled ? 'disabled' : ''}>Save</button>
-          <button class='event__reset-btn' type='reset' ${isDisabled ? 'disabled' : ''}>Delete</button>
+          <button class='event__save-btn  btn  btn--blue' type='submit' ${isDisabled ? 'disabled' : ''}>
+            ${isSaving ? 'saving...' : 'save'}
+          </button>
+          <button class='event__reset-btn' type='reset' ${isDisabled ? 'disabled' : ''}>
+            ${isDeleting ? 'deleting...' : 'delete'}
+          </button>
         </header>
         <section class='event__details'>
           <section class='event__section  event__section--offers'>
