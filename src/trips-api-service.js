@@ -25,7 +25,7 @@ export default class TripsApiService extends ApiService {
 
   addTrip = async (trip) => {
     const response = await this._load({
-      url: `points`,
+      url: 'points',
       method: Method.POST,
       body: JSON.stringify(this.#adaptToServer(trip)),
       headers: new Headers({'Content-type': 'application/json'}),
