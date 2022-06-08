@@ -48,7 +48,8 @@ export default class TripPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#tripEditComponent, prevTripEditComponent);
+      replace(this.#tripComponent, prevTripEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevTripComponent);
@@ -58,6 +59,24 @@ export default class TripPresenter {
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
       this.#replaceFormToRoute();
+    }
+  };
+
+  setSaving = () => {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  };
+
+  setDeleting = () => {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
     }
   };
 
@@ -105,7 +124,6 @@ export default class TripPresenter {
       UpdateType.MINOR,
       trip,
     );
-    this.#replaceFormToRoute();
   };
 
   #handleFavoriteClick = () => {

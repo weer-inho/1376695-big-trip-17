@@ -43,13 +43,19 @@ export default class TripNewPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
+  setSaving = () => {
+    this.#tripEditComponent.updateElement({
+      isDisabled: true,
+      isSaving: true,
+    });
+  };
+
   #handleFormSubmit = (trip) => {
     this.#changeData(
       UserAction.ADD_TRIP,
       UpdateType.MINOR,
       trip
     );
-    this.destroy();
   };
 
   #handleDeleteClick = () => {
