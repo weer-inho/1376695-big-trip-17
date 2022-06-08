@@ -1,6 +1,5 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import NewFormView from '../view/new-form';
-import {nanoid} from 'nanoid';
 import {UserAction, UpdateType} from '../const.js';
 
 export default class TripNewPresenter {
@@ -48,9 +47,7 @@ export default class TripNewPresenter {
     this.#changeData(
       UserAction.ADD_TRIP,
       UpdateType.MINOR,
-      // Пока у нас нет сервера, который бы после сохранения
-      // выдывал честный id задачи, нам нужно позаботиться об этом самим
-      {id: nanoid(), ...trip},
+      trip
     );
     this.destroy();
   };

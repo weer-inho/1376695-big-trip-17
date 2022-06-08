@@ -8,58 +8,71 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const BLANK_TRIP = {
-  'basePrice': 1653,
-  'dateFrom': '2022-05-09T13:36:02.139Z',
-  'dateTo': '2022-05-15T03:43:02.139Z',
+  'id': '0',
+  'type': 'drive',
   'destination': {
-    'destinationDescription': 'Middletons poor put if share fortune exercise excuse. Conveying determine limited impossible daughters passage had above respect',
-    'name': 'Tokyo',
+    'name': 'Amsterdam',
+    'description': 'Amsterdam, a true asian pearl, middle-eastern paradise.',
     'pictures': [
       {
-        'src': 'https://picsum.photos/id/883/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.28199525209031395',
+        'description': 'Amsterdam kindergarten'
       },
       {
-        'src': 'https://picsum.photos/id/958/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.5060534212671977',
+        'description': 'Amsterdam parliament building'
       },
       {
-        'src': 'https://picsum.photos/id/498/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.7306487415267351',
+        'description': 'Amsterdam kindergarten'
       },
       {
-        'src': 'https://picsum.photos/id/299/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.3019096014896243',
+        'description': 'Amsterdam street market'
       },
       {
-        'src': 'https://picsum.photos/id/340/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.3500851895159094',
+        'description': 'Amsterdam park'
+      },
+      {
+        'src': 'http://picsum.photos/300/200?r=0.8134527657175938',
+        'description': 'Amsterdam embankment'
+      },
+      {
+        'src': 'http://picsum.photos/300/200?r=0.3725166438245062',
+        'description': 'Amsterdam city centre'
       }
     ]
   },
-  'id': '3elIVoOMRAfaTa4bdg_MH',
-  'isFavorite': 1,
-  'type': 'drive',
+  'offers': [
+    1,
+    2,
+    3
+  ],
   'offer': [
     {
       'id': 1,
       'title': 'Choose seats',
       'price': 19,
-      'selected': true
+      'selected': false
     },
     {
       'id': 2,
       'title': 'Choose the radio station',
-      'price': 50,
+      'price': 10,
       'selected': true
     },
     {
       'id': 3,
       'title': 'Switch to comfort',
-      'price': 21,
+      'price': 43,
       'selected': true
     }
-  ]
+  ],
+  'dateFrom': '2022-06-06T21:00:00.000Z',
+  'dateTo': '2022-06-07T13:14:49.289Z',
+  'basePrice': 300,
+  'isFavorite': false
 };
 
 const createEventOffers = (offersArray) => (`<section class='event__section  event__section--offers'>
