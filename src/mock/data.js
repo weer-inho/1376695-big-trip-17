@@ -31,7 +31,8 @@ export const offers = {
       'title': 'Switch to comfort',
       'price': getRandomInteger(0, 100),
       'selected' : Boolean(getRandomInteger(0, 1)),
-    }, {
+    },
+    {
       'id' : 2,
       'title': 'Choose the radio station',
       'price': getRandomInteger(0, 100),
@@ -45,12 +46,14 @@ export const offers = {
       'title': 'Switch to comfort',
       'price': getRandomInteger(0, 100),
       'selected' : Boolean(getRandomInteger(0, 1))
-    }, {
+    },
+    {
       'id' : 2,
       'title': 'Add meal',
       'price': getRandomInteger(0, 100),
       'selected' : Boolean(getRandomInteger(0, 1))
-    }, {
+    },
+    {
       'id' : 3,
       'title': 'Choose seats',
       'price': getRandomInteger(0, 100),
@@ -71,12 +74,14 @@ export const offers = {
       'title': 'Choose seats',
       'price': getRandomInteger(0, 100),
       'selected' : Boolean(getRandomInteger(0, 1))
-    }, {
+    },
+    {
       'id' : 2,
       'title': 'Choose the radio station',
       'price': getRandomInteger(0, 100),
       'selected' : Boolean(getRandomInteger(0, 1))
-    }, {
+    },
+    {
       'id' : 3,
       'title': 'Switch to comfort',
       'price': getRandomInteger(0, 100),
@@ -89,17 +94,20 @@ export const offers = {
       'title': 'Switch to comfort',
       'price': getRandomInteger(0, 100),
       'selected' : Boolean(getRandomInteger(0, 1))
-    }, {
+    },
+    {
       'id' : 2,
       'title': 'Add meal',
       'price': getRandomInteger(0, 100),
       'selected' : Boolean(getRandomInteger(0, 1))
-    }, {
+    },
+    {
       'id' : 3,
       'title': 'Choose seats',
       'price': getRandomInteger(0, 100),
       'selected' : Boolean(getRandomInteger(0, 1))
-    }, {
+    },
+    {
       'id' : 4,
       'title': 'Add luggage',
       'price': getRandomInteger(0, 100),
@@ -112,7 +120,8 @@ export const offers = {
       'title': 'Switch to comfort',
       'price': getRandomInteger(0, 100),
       'selected' : Boolean(getRandomInteger(0, 1))
-    }, {
+    },
+    {
       'id' : 2,
       'title': 'Add meal',
       'price': getRandomInteger(0, 100),

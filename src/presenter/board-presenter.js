@@ -3,6 +3,7 @@ import SortView from '../view/sort';
 import EmptyView from '../view/empty';
 import TripEventsListView from '../view/trip-events-list';
 import TripPresenter from './trip-presenter';
+import LoadingView from '../view/loading';
 import {render, RenderPosition, remove} from '../framework/render';
 import {updateItem, sortPrice, sortTime, filter} from '../utils';
 import {SortType, UpdateType, UserAction, FilterType} from '../const';
@@ -20,10 +21,12 @@ export default class BoardPresenter {
   #sortComponent = null;
   #tripNewPresenter = null;
   #listComponent = new TripEventsListView();
+  #loadingComponent = new LoadingView();
 
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.EVERYTHING;
   #tripPresenter = new Map();
+  #isLoading = true;
 
   constructor(boardContainer, tripsModel, filterModel) {
     this.#boardContainer = boardContainer;
@@ -96,13 +99,21 @@ export default class BoardPresenter {
     }
   };
 
+  #renderLoading = () => {
+    render(this.#loadingComponent, this.#tripEvents, RenderPosition.AFTERBEGIN);
+  };
+
   #renderBoard = () => {
     this.#tripControls = this.#boardContainer.querySelector('.trip-main');
     this.#tripControlsFilters = this.#tripControls.querySelector('.trip-controls__filters');
     this.#tripEvents = this.#boardContainer.querySelector('.trip-events');
+    // if (this.trips.length === 0) {
+    //   this.#renderEmpty(this.#filterType);
+    //   return;
+    // }
 
-    if (this.trips.length === 0) {
-      this.#renderEmpty(this.#filterType);
+    if (this.#isLoading) {
+      this.#renderLoading();
       return;
     }
 
@@ -150,6 +161,10 @@ export default class BoardPresenter {
           this.#renderTrips();
         }
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderBoard();
     }
   };
 

@@ -4,9 +4,13 @@ import TripsModel from './model/trips-model';
 import FilterModel from './model/filter-model';
 import NewTripButtonView from './view/new-trip-button';
 import {render} from './framework/render';
+import TripsApiService from './trips-api-service';
+
+const END_POINT = 'https://17.ecmascript.pages.academy/big-trip';
+const AUTHORIZATION = 'Basic IS1q8u1lsp42aef';
 
 const filterModel = new FilterModel();
-const tripsModel = new TripsModel();
+const tripsModel = new TripsModel(new TripsApiService(END_POINT, AUTHORIZATION));
 
 const body = document.querySelector('.page-body');
 
@@ -23,8 +27,9 @@ const handleNewTripButtonClick = () => {
   newTripButtonComponent.element.disabled = true;
 };
 
-render(newTripButtonComponent, body.querySelector('.trip-main'));
-newTripButtonComponent.setClickHandler(handleNewTripButtonClick);
-
 filterPresenter.init();
 boardPresenter.init();
+tripsModel.init().finally(() => {
+  render(newTripButtonComponent, body.querySelector('.trip-main'));
+  newTripButtonComponent.setClickHandler(handleNewTripButtonClick);
+});
