@@ -50,6 +50,18 @@ export default class TripNewPresenter {
     });
   };
 
+  setAborting = () => {
+    const resetFormState = () => {
+      this.#tripEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#tripEditComponent.shake(resetFormState);
+  };
+
   #handleFormSubmit = (trip) => {
     this.#changeData(
       UserAction.ADD_TRIP,

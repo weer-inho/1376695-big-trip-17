@@ -122,19 +122,31 @@ export default class BoardPresenter {
     this.#renderTrips();
   };
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_TRIP:
         this.#tripPresenter.get(update.id).setSaving();
-        this.#tripsModel.updateTrip(updateType, update);
+        try {
+          await this.#tripsModel.updateTrip(updateType, update);
+        } catch(err) {
+          this.#tripPresenter.get(update.id).setAborting();
+        }
         break;
       case UserAction.ADD_TRIP:
         this.#tripNewPresenter.setSaving();
-        this.#tripsModel.addTrip(updateType, update);
+        try {
+          await this.#tripsModel.addTrip(updateType, update);
+        } catch(err) {
+          this.#tripNewPresenter.setAborting();
+        }
         break;
       case UserAction.DELETE_TRIP:
         this.#tripPresenter.get(update.id).setDeleting();
-        this.#tripsModel.deleteTrip(updateType, update);
+        try {
+          await this.#tripsModel.deleteTrip(updateType, update);
+        } catch(err) {
+          this.#tripPresenter.get(update.id).setAborting();
+        }
         break;
     }
   };

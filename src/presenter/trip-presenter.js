@@ -85,6 +85,23 @@ export default class TripPresenter {
     remove(this.#tripEditComponent);
   };
 
+  setAborting = () => {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#tripComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#tripEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#tripEditComponent.shake(resetFormState);
+  };
+
   #replaceRouteToForm = () => {
     replace(this.#tripEditComponent, this.#tripComponent);
     document.addEventListener('keydown', this.#onEscKeyDown);
