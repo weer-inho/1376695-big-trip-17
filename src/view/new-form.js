@@ -8,58 +8,71 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const BLANK_TRIP = {
-  'basePrice': 1653,
-  'dateFrom': '2022-05-09T13:36:02.139Z',
-  'dateTo': '2022-05-15T03:43:02.139Z',
+  'id': '0',
+  'type': 'drive',
   'destination': {
-    'destinationDescription': 'Middletons poor put if share fortune exercise excuse. Conveying determine limited impossible daughters passage had above respect',
-    'name': 'Tokyo',
+    'name': 'Amsterdam',
+    'description': 'Amsterdam, a true asian pearl, middle-eastern paradise.',
     'pictures': [
       {
-        'src': 'https://picsum.photos/id/883/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.28199525209031395',
+        'description': 'Amsterdam kindergarten'
       },
       {
-        'src': 'https://picsum.photos/id/958/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.5060534212671977',
+        'description': 'Amsterdam parliament building'
       },
       {
-        'src': 'https://picsum.photos/id/498/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.7306487415267351',
+        'description': 'Amsterdam kindergarten'
       },
       {
-        'src': 'https://picsum.photos/id/299/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.3019096014896243',
+        'description': 'Amsterdam street market'
       },
       {
-        'src': 'https://picsum.photos/id/340/300/200',
-        'description': 'Event Photo'
+        'src': 'http://picsum.photos/300/200?r=0.3500851895159094',
+        'description': 'Amsterdam park'
+      },
+      {
+        'src': 'http://picsum.photos/300/200?r=0.8134527657175938',
+        'description': 'Amsterdam embankment'
+      },
+      {
+        'src': 'http://picsum.photos/300/200?r=0.3725166438245062',
+        'description': 'Amsterdam city centre'
       }
     ]
   },
-  'id': '3elIVoOMRAfaTa4bdg_MH',
-  'isFavorite': 1,
-  'type': 'drive',
+  'offers': [
+    1,
+    2,
+    3
+  ],
   'offer': [
     {
       'id': 1,
       'title': 'Choose seats',
       'price': 19,
-      'selected': true
+      'selected': false
     },
     {
       'id': 2,
       'title': 'Choose the radio station',
-      'price': 50,
+      'price': 10,
       'selected': true
     },
     {
       'id': 3,
       'title': 'Switch to comfort',
-      'price': 21,
+      'price': 43,
       'selected': true
     }
-  ]
+  ],
+  'dateFrom': '2022-06-06T21:00:00.000Z',
+  'dateTo': '2022-06-07T13:14:49.289Z',
+  'basePrice': 300,
+  'isFavorite': false
 };
 
 const createEventOffers = (offersArray) => (`<section class='event__section  event__section--offers'>
@@ -83,8 +96,8 @@ const createEventPhotos = (photos) => (`
 ${photos.map((photo) => `<img class='event__photo' src='${photo.src}' alt='${photos.destination}'>`)}
 `);
 
-const createNewFormTemplate = (trip) => {
-  const {type, destination, dateFrom, dateTo, basePrice} = trip;
+const createNewFormTemplate = (trip, isDisabled) => {
+  const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting} = trip;
   const offer = offers[type];
 
   return (
@@ -96,10 +109,10 @@ const createNewFormTemplate = (trip) => {
               <span class='visually-hidden'>Choose event type</span>
               <img class='event__type-icon' width='17' height='17' src='img/icons/${type}.png' alt='Event type icon'>
             </label>
-            <input class='event__type-toggle  visually-hidden' id='event-type-toggle-1' type='checkbox'>
+            <input class='event__type-toggle  visually-hidden' id='event-type-toggle-1' type='checkbox' ${isDisabled ? 'disabled' : ''}>
 
             <div class='event__type-list'>
-              <fieldset class='event__type-group'>
+              <fieldset class='event__type-group' ${isDisabled ? 'disabled' : ''}>
                 <legend class='visually-hidden'>Event type</legend>
 
                 <div class='event__type-item'>
@@ -154,7 +167,7 @@ const createNewFormTemplate = (trip) => {
             <label class='event__label  event__type-output' for='event-destination-1'>
               ${type}
             </label>
-            <input class='event__input  event__input--destination' id='event-destination-1' type='text' name='event-destination' value='${destination.name}' list='destination-list-1'>
+            <input class='event__input  event__input--destination' id='event-destination-1' type='text' name='event-destination' value='${destination.name}' list='destination-list-1' ${isDisabled ? 'disabled' : ''}>
             <datalist id='destination-list-1'>
               <option value='Amsterdam'></option>
               <option value='Geneva'></option>
@@ -164,10 +177,10 @@ const createNewFormTemplate = (trip) => {
 
           <div class='event__field-group  event__field-group--time'>
             <label class='visually-hidden' for='event-start-time-1'>From</label>
-            <input class='event__input  event__input--time' id='event-start-time-1' type='text' name='event-start-time' value='${dayjs(dateFrom).format('M/D/YYYY h:mm')}'>
+            <input class='event__input  event__input--time' id='event-start-time-1' type='text' name='event-start-time' value='${dayjs(dateFrom).format('M/D/YYYY h:mm')}' ${isDisabled ? 'disabled' : ''}>
             &mdash;
             <label class='visually-hidden' for='event-end-time-1'>To</label>
-            <input class='event__input  event__input--time' id='event-end-time-1' type='text' name='event-end-time' value='${dayjs(dateTo).format('M/D/YYYY h:mm')}'>
+            <input class='event__input  event__input--time' id='event-end-time-1' type='text' name='event-end-time' value='${dayjs(dateTo).format('M/D/YYYY h:mm')}' ${isDisabled ? 'disabled' : ''}>
           </div>
 
           <div class='event__field-group  event__field-group--price'>
@@ -175,11 +188,15 @@ const createNewFormTemplate = (trip) => {
               <span class='visually-hidden'>Price</span>
               &euro; ${basePrice}
             </label>
-            <input class='event__input  event__input--price' id='event-price-1' type='number' name='event-price' value=''>
+            <input class='event__input  event__input--price' id='event-price-1' type='number' name='event-price' value='' ${isDisabled ? 'disabled' : ''}>
           </div>
 
-          <button class='event__save-btn  btn  btn--blue' type='submit'>Save</button>
-          <button class='event__reset-btn' type='reset'>Delete</button>
+          <button class='event__save-btn  btn  btn--blue' type='submit' ${isDisabled ? 'disabled' : ''}>
+            ${isSaving ? 'saving...' : 'save'}
+          </button>
+          <button class='event__reset-btn' type='reset' ${isDisabled ? 'disabled' : ''}>
+            ${isDeleting ? 'deleting...' : 'delete'}
+          </button>
         </header>
         <section class='event__details'>
           <section class='event__section  event__section--offers'>

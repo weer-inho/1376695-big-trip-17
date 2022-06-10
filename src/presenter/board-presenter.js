@@ -4,10 +4,16 @@ import EmptyView from '../view/empty';
 import TripEventsListView from '../view/trip-events-list';
 import TripPresenter from './trip-presenter';
 import LoadingView from '../view/loading';
+import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import {render, RenderPosition, remove} from '../framework/render';
 import {updateItem, sortPrice, sortTime, filter} from '../utils';
 import {SortType, UpdateType, UserAction, FilterType} from '../const';
 import TripNewPresenter from './trip-new-presenter';
+
+const TimeLimit = {
+  LOWER_LIMIT: 350,
+  UPPER_LIMIT: 1000,
+};
 
 export default class BoardPresenter {
   #tripsModel = null;
@@ -22,6 +28,7 @@ export default class BoardPresenter {
   #tripNewPresenter = null;
   #listComponent = new TripEventsListView();
   #loadingComponent = new LoadingView();
+  #uiBlocker = new UiBlocker(TimeLimit.LOWER_LIMIT, TimeLimit.UPPER_LIMIT);
 
   #currentSortType = SortType.DEFAULT;
   #filterType = FilterType.EVERYTHING;
@@ -122,18 +129,37 @@ export default class BoardPresenter {
     this.#renderTrips();
   };
 
-  #handleViewAction = (actionType, updateType, update) => {
+  #handleViewAction = async (actionType, updateType, update) => {
+    this.#uiBlocker.block();
+
     switch (actionType) {
       case UserAction.UPDATE_TRIP:
-        this.#tripsModel.updateTrip(updateType, update);
+        this.#tripPresenter.get(update.id).setSaving();
+        try {
+          await this.#tripsModel.updateTrip(updateType, update);
+        } catch(err) {
+          this.#tripPresenter.get(update.id).setAborting();
+        }
         break;
       case UserAction.ADD_TRIP:
-        this.#tripsModel.addTrip(updateType, update);
+        this.#tripNewPresenter.setSaving();
+        try {
+          await this.#tripsModel.addTrip(updateType, update);
+        } catch(err) {
+          this.#tripNewPresenter.setAborting();
+        }
         break;
       case UserAction.DELETE_TRIP:
-        this.#tripsModel.deleteTrip(updateType, update);
+        this.#tripPresenter.get(update.id).setDeleting();
+        try {
+          await this.#tripsModel.deleteTrip(updateType, update);
+        } catch(err) {
+          this.#tripPresenter.get(update.id).setAborting();
+        }
         break;
     }
+
+    this.#uiBlocker.unblock();
   };
 
   #handleModelEvent = (updateType, data) => {

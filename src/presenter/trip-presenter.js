@@ -48,7 +48,8 @@ export default class TripPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#tripEditComponent, prevTripEditComponent);
+      replace(this.#tripComponent, prevTripEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevTripComponent);
@@ -61,9 +62,44 @@ export default class TripPresenter {
     }
   };
 
+  setSaving = () => {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripEditComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  };
+
+  setDeleting = () => {
+    if (this.#mode === Mode.EDITING) {
+      this.#tripEditComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  };
+
   destroy = () => {
     remove(this.#tripComponent);
     remove(this.#tripEditComponent);
+  };
+
+  setAborting = () => {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#tripComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#tripEditComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#tripEditComponent.shake(resetFormState);
   };
 
   #replaceRouteToForm = () => {
@@ -105,7 +141,6 @@ export default class TripPresenter {
       UpdateType.MINOR,
       trip,
     );
-    this.#replaceFormToRoute();
   };
 
   #handleFavoriteClick = () => {
