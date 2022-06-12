@@ -88,9 +88,9 @@ export const sortPrice = (priceA, priceB) => {
   return 0;
 };
 
-const isTripPast = (dueDate) => dueDate && dayjs().isBefore(dueDate, 'D');
+const isTripPast = (dueDate) => dueDate && dayjs().isAfter(dueDate, 'D');
 
-const isTripFuture = (dueDate) => dueDate && dayjs().isAfter(dueDate, 'D');
+const isTripFuture = (dueDate) => dueDate && dayjs().isBefore(dueDate, 'D');
 
 const filter = {
   [FilterType.EVERYTHING]: (trips) => trips,
