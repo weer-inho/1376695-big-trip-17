@@ -2,6 +2,18 @@ import AbstractView from '../framework/view/abstract-view';
 import {getDuration} from '../utils';
 import dayjs from 'dayjs';
 
+const createEventOffers = (offersArray) => (`
+<ul class="event__selected-offers">
+  ${(offersArray.length === 0) ? '' : `
+      ${offersArray.map((offer) => `
+        <li class="event__offer">
+            <span class="event__offer-title">${offer === undefined ? '' : offer.title}</span>
+            &plus;&euro;&nbsp;
+            <span class="event__offer-price">${offer === undefined ? '' : offer.price}</span>
+        </li>`).join('')}`}
+</ul>`
+);
+
 const createRoutePointTemplate = (trip) => {
   const {type, destination, dateFrom, dateTo, basePrice, offer, isFavorite} = trip;
 
@@ -30,13 +42,7 @@ const createRoutePointTemplate = (trip) => {
           &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
         </p>
         <h4 class="visually-hidden">Offers:</h4>
-        <ul class="event__selected-offers">
-          <li class="event__offer">
-            <span class="event__offer-title">${offer[0] === undefined ? '' : offer[0].title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${offer[0] === undefined ? '' : offer[0].price}</span>
-          </li>
-        </ul>
+           ${createEventOffers(offer)}
         <button class="event__favorite-btn ${isFavorite ? 'event__favorite-btn--active' : ''}" type="button">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
