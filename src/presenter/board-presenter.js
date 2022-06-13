@@ -6,7 +6,7 @@ import TripPresenter from './trip-presenter';
 import LoadingView from '../view/loading';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import {render, RenderPosition, remove} from '../framework/render';
-import {updateItem, sortPrice, sortTime, filter} from '../utils';
+import {updateItem, sortPrice, sortTime, sortDay, filter} from '../utils';
 import {SortType, UpdateType, UserAction, FilterType} from '../const';
 import TripNewPresenter from './trip-new-presenter';
 
@@ -57,7 +57,7 @@ export default class BoardPresenter {
       case SortType.TIME:
         return [...filteredTrips].sort(sortTime);
       case SortType.DEFAULT:
-        return [...filteredTrips];
+        return [...filteredTrips].sort(sortDay);
     }
     return this.#tripsModel.trips;
   }

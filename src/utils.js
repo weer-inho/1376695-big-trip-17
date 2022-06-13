@@ -68,6 +68,16 @@ export const updateItem = (items, update) => {
   ];
 };
 
+export const sortDay = (dayA, dayB) => {
+  if (dayA.dateFrom < dayB.dateFrom) {
+    return 1;
+  }
+  if (dayA.dateFrom > dayB.dateFrom) {
+    return -1;
+  }
+  return 0;
+};
+
 export const sortTime = (timeA, timeB) => {
   if (dayjs(timeA.dateTo).diff(timeA.dateFrom, 'm') < dayjs(timeB.dateTo).diff(timeB.dateFrom, 'm')) {
     return 1;
