@@ -114,10 +114,6 @@ export default class BoardPresenter {
     this.#tripControls = this.#boardContainer.querySelector('.trip-main');
     this.#tripControlsFilters = this.#tripControls.querySelector('.trip-controls__filters');
     this.#tripEvents = this.#boardContainer.querySelector('.trip-events');
-    // if (this.trips.length === 0) {
-    //   this.#renderEmpty(this.#filterType);
-    //   return;
-    // }
 
     if (this.#isLoading) {
       this.#renderLoading();

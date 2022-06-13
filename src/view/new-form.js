@@ -75,21 +75,20 @@ const BLANK_TRIP = {
   'isFavorite': false
 };
 
-const createEventOffers = (offersArray) => (`<section class='event__section  event__section--offers'>
-  ${(offersArray.length === 0) ? '' : `
-    <h3 class='event__section-title  event__section-title--offers'>Offers</h3>
-    <div class='event__available-offers'>
-      ${offersArray.map((offer) => `<div class='event__offer-selector'>
-        <input class='event__offer-checkbox  visually-hidden' id='event-offer' type='checkbox' name='event-offer-${offer.id}'
-        ${(offer.selected) ? 'checked' : ''}>
-        <label class='event__offer-label' for='event-offer-${offer.id}'>
-          <span class='event__offer-title'>${offer.title}</span>
-          &plus;&euro;&nbsp;
-          <span class='event__offer-price'>${offer.price}</span>
-        </label>
-      </div>`).join('')}
-    </div>`}
-  </section>`
+const createEventOffers = (offers) => (`<section class="event__section  event__section--offers">
+${(offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
+<div class="event__available-offers">
+  ${offers.map((offer) => `<div class="event__offer-selector">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}" type="checkbox" name="event-offer-${offer.id}"
+    ${(offer.selected) ? 'checked' : ''}>
+    <label class="event__offer-label" for="event-offer-${offer.id}">
+      <span class="event__offer-title">${offer.title}</span>
+      &plus;&euro;&nbsp;
+      <span class="event__offer-price">${offer.price}</span>
+    </label>
+  </div>`).join('')}
+</div>`}
+</section>`
 );
 
 const createEventPhotos = (photos) => (`
