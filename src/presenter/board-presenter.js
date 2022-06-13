@@ -110,6 +110,10 @@ export default class BoardPresenter {
     render(this.#loadingComponent, this.#tripEvents, RenderPosition.AFTERBEGIN);
   };
 
+  #renderInfoView = () => {
+    render(new InfoView(this.trips), this.#tripControls, RenderPosition.AFTERBEGIN);
+  };
+
   #renderBoard = () => {
     this.#tripControls = this.#boardContainer.querySelector('.trip-main');
     this.#tripControlsFilters = this.#tripControls.querySelector('.trip-controls__filters');
@@ -120,7 +124,7 @@ export default class BoardPresenter {
       return;
     }
 
-    render(new InfoView(this.trips), this.#tripControls, RenderPosition.AFTERBEGIN);
+    this.#renderInfoView();
     this.#renderSort();
     this.#renderTrips();
   };
@@ -166,6 +170,7 @@ export default class BoardPresenter {
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderSort();
+        this.#renderInfoView();
         this.#currentSortType = SortType.DEFAULT;
         if (this.trips.length === 0) {
           this.#renderEmpty(this.#filterType);
@@ -176,6 +181,7 @@ export default class BoardPresenter {
       case UpdateType.MAJOR:
         this.#clearBoard();
         this.#renderSort();
+        this.#renderInfoView();
         this.#currentSortType = SortType.DEFAULT;
         if (this.trips.length === 0) {
           this.#renderEmpty(this.#filterType);
@@ -217,6 +223,7 @@ export default class BoardPresenter {
   #clearBoard = () => {
     this.#tripPresenter.forEach((presenter) => presenter.destroy());
     this.#tripPresenter.clear();
+    this.#boardContainer.querySelector('.trip-main__trip-info.trip-info').remove();
 
     remove(this.#sortComponent);
     this.#currentSortType = SortType.DEFAULT;
