@@ -95,7 +95,12 @@ const createEventPhotos = (photos) => (`
 ${photos.map((photo) => `<img class='event__photo' src='${photo.src}' alt='${photos.destination}'>`)}
 `);
 
-const createNewFormTemplate = (trip, isDisabled) => {
+const createDestinationList = (destinations) => (`
+${destinations.map((destination) => `<option value="${destination.name}"></option>`)}
+`);
+
+
+const createNewFormTemplate = (trip, destinations) => {
   const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting} = trip;
   const offer = offers[type];
 
@@ -108,10 +113,10 @@ const createNewFormTemplate = (trip, isDisabled) => {
               <span class='visually-hidden'>Choose event type</span>
               <img class='event__type-icon' width='17' height='17' src='img/icons/${type}.png' alt='Event type icon'>
             </label>
-            <input class='event__type-toggle  visually-hidden' id='event-type-toggle-1' type='checkbox' ${isDisabled ? 'disabled' : ''}>
+            <input class='event__type-toggle  visually-hidden' id='event-type-toggle-1' type='checkbox'>
 
             <div class='event__type-list'>
-              <fieldset class='event__type-group' ${isDisabled ? 'disabled' : ''}>
+              <fieldset class='event__type-group'>
                 <legend class='visually-hidden'>Event type</legend>
 
                 <div class='event__type-item'>
@@ -166,20 +171,18 @@ const createNewFormTemplate = (trip, isDisabled) => {
             <label class='event__label  event__type-output' for='event-destination-1'>
               ${type}
             </label>
-            <input class='event__input  event__input--destination' id='event-destination-1' type='text' name='event-destination' value='${destination.name}' list='destination-list-1' ${isDisabled ? 'disabled' : ''}>
+            <input class='event__input  event__input--destination' id='event-destination-1' type='text' name='event-destination' value='${destination.name}' list='destination-list-1'>
             <datalist id='destination-list-1'>
-              <option value='Amsterdam'></option>
-              <option value='Geneva'></option>
-              <option value='Chamonix'></option>
+                ${createDestinationList(destinations)}
             </datalist>
           </div>
 
           <div class='event__field-group  event__field-group--time'>
             <label class='visually-hidden' for='event-start-time-1'>From</label>
-            <input class='event__input  event__input--time' id='event-start-time-1' type='text' name='event-start-time' value='${dayjs(dateFrom).format('M/D/YYYY h:mm')}' ${isDisabled ? 'disabled' : ''}>
+            <input class='event__input  event__input--time' id='event-start-time-1' type='text' name='event-start-time' value='${dayjs(dateFrom).format('M/D/YYYY h:mm')}'>
             &mdash;
             <label class='visually-hidden' for='event-end-time-1'>To</label>
-            <input class='event__input  event__input--time' id='event-end-time-1' type='text' name='event-end-time' value='${dayjs(dateTo).format('M/D/YYYY h:mm')}' ${isDisabled ? 'disabled' : ''}>
+            <input class='event__input  event__input--time' id='event-end-time-1' type='text' name='event-end-time' value='${dayjs(dateTo).format('M/D/YYYY h:mm')}'>
           </div>
 
           <div class='event__field-group  event__field-group--price'>
@@ -187,13 +190,15 @@ const createNewFormTemplate = (trip, isDisabled) => {
               <span class='visually-hidden'>Price</span>
               &euro; ${basePrice}
             </label>
-            <input class='event__input  event__input--price' id='event-price-1' type='number' name='event-price' value='' ${isDisabled ? 'disabled' : ''}>
+            <input class='event__input  event__input--price' id='event-price-1' type='number' name='event-price' value=''>
           </div>
 
-          <button class='event__save-btn  btn  btn--blue' type='submit' ${isDisabled ? 'disabled' : ''}>
+          <button class='event__save-btn  btn  btn--blue' type='submit'
+          >
             ${isSaving ? 'saving...' : 'save'}
           </button>
-          <button class='event__reset-btn' type='reset' ${isDisabled ? 'disabled' : ''}>
+          <button class='event__reset-btn' type='reset'
+          >
             ${isDeleting ? 'deleting...' : 'delete'}
           </button>
         </header>
@@ -222,17 +227,19 @@ const createNewFormTemplate = (trip, isDisabled) => {
 
 export default class NewFormView extends AbstractStatefulView {
   #datepicker = null;
+  #destinations = null;
 
-  constructor(trip = BLANK_TRIP) {
+  constructor(trip = BLANK_TRIP, destinations) {
     super();
     this._state = trip;
+    this.#destinations = destinations;
 
     this.#setInnerHandlers();
     this.#setDatepicker();
   }
 
   get template() {
-    return createNewFormTemplate(this._state);
+    return createNewFormTemplate(this._state, this.#destinations);
   }
 
   _restoreHandlers = () => {

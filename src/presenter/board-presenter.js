@@ -46,6 +46,10 @@ export default class BoardPresenter {
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
+  get destinations() {
+    return this.#tripsModel.destinations;
+  }
+
   get trips() {
     this.#filterType = this.#filterModel.filter;
     const trips = this.#tripsModel.trips;
@@ -91,6 +95,7 @@ export default class BoardPresenter {
       this.#tripEventsList,
       this.#handleViewAction,
       this.#handleModeChange,
+      this.destinations
     );
     tripPresenter.init(trip);
     this.#tripPresenter.set(trip.id, tripPresenter);
