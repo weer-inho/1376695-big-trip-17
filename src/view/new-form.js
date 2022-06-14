@@ -1,8 +1,6 @@
 import dayjs from 'dayjs';
-import {description, offers} from '../mock/data';
+import {offers} from '../mock/data';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
-import {generatePictures} from '../mock/point';
-import {getRandomInteger} from '../utils';
 import flatpickr from 'flatpickr';
 
 import 'flatpickr/dist/flatpickr.min.css';
@@ -312,11 +310,12 @@ export default class NewFormView extends AbstractStatefulView {
   };
 
   #cityNameChanged = (evt) => {
+    const serverDestinationObject = this.#destinations.find((element) => element.name === evt.target.value);
     this.updateElement({
       destination: {
-        destinationDescription: description[getRandomInteger(1, description.length)],
+        destinationDescription: serverDestinationObject.description,
         name: evt.target.value,
-        pictures: generatePictures(),
+        pictures: serverDestinationObject.pictures,
       },
     });
   };
