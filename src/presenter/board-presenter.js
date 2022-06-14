@@ -170,23 +170,25 @@ export default class BoardPresenter {
       case UpdateType.MINOR:
         this.#clearBoard();
         this.#renderSort();
-        this.#renderInfoView();
+
         this.#currentSortType = SortType.DEFAULT;
         if (this.trips.length === 0) {
           this.#renderEmpty(this.#filterType);
         } else {
           this.#renderTrips();
+          this.#renderInfoView();
         }
         break;
       case UpdateType.MAJOR:
         this.#clearBoard();
         this.#renderSort();
-        this.#renderInfoView();
+
         this.#currentSortType = SortType.DEFAULT;
         if (this.trips.length === 0) {
           this.#renderEmpty(this.#filterType);
         } else {
           this.#renderTrips();
+          this.#renderInfoView();
         }
         break;
       case UpdateType.INIT:
@@ -223,7 +225,13 @@ export default class BoardPresenter {
   #clearBoard = () => {
     this.#tripPresenter.forEach((presenter) => presenter.destroy());
     this.#tripPresenter.clear();
-    this.#boardContainer.querySelector('.trip-main__trip-info.trip-info').remove();
+
+    if (this.#boardContainer.querySelector('.trip-main__trip-info.trip-info')) {
+      this.#boardContainer.querySelector('.trip-main__trip-info.trip-info').remove();
+    }
+    if (this.#boardContainer.querySelector('.trip-events__msg')) {
+      this.#boardContainer.querySelector('.trip-events__msg').remove();
+    }
 
     remove(this.#sortComponent);
     this.#currentSortType = SortType.DEFAULT;

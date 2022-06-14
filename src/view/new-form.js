@@ -304,11 +304,11 @@ export default class NewFormView extends AbstractStatefulView {
     this.element.querySelector('.event__type-group').addEventListener('change', this.#typePointChanged);
   };
 
-  #cityNameChanged = () => {
+  #cityNameChanged = (evt) => {
     this.updateElement({
       destination: {
         destinationDescription: description[getRandomInteger(1, description.length)],
-        name: this._state.destination.name,
+        name: evt.target.value,
         pictures: generatePictures(),
       },
     });
