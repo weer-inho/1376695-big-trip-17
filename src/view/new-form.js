@@ -101,6 +101,7 @@ ${destinations.map((destination) => `<option value="${destination.name}"></optio
 const createNewFormTemplate = (trip, destinations) => {
   const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting} = trip;
   const offer = offers[type];
+  const serverDestinationObject = destinations.find((element) => element.name === destination.name);
 
   return (
     `<li class='trip-events__item'>
@@ -208,12 +209,12 @@ const createNewFormTemplate = (trip, destinations) => {
           <section class='event__section  event__section--destination'>
             <h3 class='event__section-title  event__section-title--destination'>Destination</h3>
             <p class='event__destination-description'>
-              ${destination.destinationDescription}
+              ${serverDestinationObject.description}
             </p>
 
             <div class='event__photos-container'>
               <div class='event__photos-tape'>
-                  ${createEventPhotos(destination.pictures)}
+                  ${createEventPhotos(serverDestinationObject.pictures)}
               </div>
             </div>
           </section>
