@@ -5,12 +5,16 @@ import dayjs from 'dayjs';
 const createEventOffers = (offersArray) => (`
 <ul class="event__selected-offers">
   ${(offersArray.length === 0) ? '' : `
-      ${offersArray.map((offer) => `
-        <li class="event__offer">
-            <span class="event__offer-title">${offer === undefined ? '' : offer.title}</span>
-            &plus;&euro;&nbsp;
-            <span class="event__offer-price">${offer === undefined ? '' : offer.price}</span>
-        </li>`).join('')}`}
+      ${offersArray.map((offer) => {
+    if (offer.selected === true) {
+      return `
+            <li class="event__offer">
+                <span class="event__offer-title">${offer === undefined ? '' : offer.title}</span>
+                &plus;&euro;&nbsp;
+                <span class="event__offer-price">${offer === undefined ? '' : offer.price}</span>
+            </li>`;
+    }
+  }).join('')}`}
 </ul>`
 );
 

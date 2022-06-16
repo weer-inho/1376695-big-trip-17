@@ -24,6 +24,7 @@ export default class TripsModel extends Observable {
   init = async () => {
     try {
       const trips = await this.#tripsApiService.trips;
+      console.log(trips)
       this.#trips = trips.map(this.#adaptToClient);
       // this.#offers = await this.#tripsApiService.serverOffers;
       this.#destinations = await this.#tripsApiService.serverDestinations;
