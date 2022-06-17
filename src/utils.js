@@ -100,12 +100,13 @@ export const sortPrice = (priceA, priceB) => {
 
 const isTripPast = (dueDate) => dueDate && dayjs().isAfter(dueDate, 'D');
 
-const isTripFuture = (dueDate) => dueDate && dayjs().isBefore(dueDate, 'D');
+const isTripFuture = (dueDate) => dueDate && (dayjs().isBefore(dueDate, 'D') || (dayjs(dueDate).format('M/D/YYYY') === dayjs().format('M/D/YYYY')));
 
 const filter = {
   [FilterType.EVERYTHING]: (trips) => trips,
-  [FilterType.PAST]: (trips) => trips.filter((trip) => isTripPast(trip.dateTo)),
-  [FilterType.FUTURE]: (trips) => trips.filter((trip) => isTripFuture(trip.dateTo)),
+  [FilterType.PAST]: (trips) => trips.filter((trip) => isTripPast(trip.dateFrom)),
+  [FilterType.FUTURE]: (trips) => trips.filter((trip) => isTripFuture(trip.dateFrom)),
 };
 
 export {filter};
+

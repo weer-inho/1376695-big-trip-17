@@ -7,7 +7,7 @@ import {render} from './framework/render';
 import TripsApiService from './trips-api-service';
 
 const END_POINT = 'https://17.ecmascript.pages.academy/big-trip';
-const AUTHORIZATION = 'Basic IS1q8u1l5p42yef';
+const AUTHORIZATION = 'Basic Io1q8u1l5p4tyef';
 
 const filterModel = new FilterModel();
 const tripsModel = new TripsModel(new TripsApiService(END_POINT, AUTHORIZATION));
