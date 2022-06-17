@@ -254,6 +254,18 @@ export default class NewFormView extends AbstractStatefulView {
       addEventListener('submit', this.#saveFormHandler);
   };
 
+  setOffersChangeHandler = () => {
+    // this._callback.offersChange = callback;
+    if (this.element.querySelector('.event__available-offers'))
+      this.element.querySelector('.event__available-offers').addEventListener('change', this.#offersChangeHandler);
+  };
+
+  #offersChangeHandler = (evt) => {
+    const name = evt.target.closest('.event__offer-selector').querySelector('span').textContent;
+    const find = this._state.offer.find((item) => item.title === name).selected === !this._state.offer.find((item) => item.title === name).selected;
+    console.log(find)
+  };
+
   removeElement = () => {
     super.removeElement();
 

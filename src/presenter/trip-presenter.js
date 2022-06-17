@@ -39,6 +39,7 @@ export default class TripPresenter {
     this.#tripComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
     this.#tripEditComponent.setSaveFormHandler(this.#handleSaveForm);
     this.#tripEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
+    this.#tripEditComponent.setOffersChangeHandler();
 
     if (prevTripComponent === null || prevTripEditComponent === null) {
       render(this.#tripComponent, this.#tripListContainer);

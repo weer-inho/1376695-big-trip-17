@@ -69,10 +69,10 @@ export const updateItem = (items, update) => {
 };
 
 export const sortDay = (dayA, dayB) => {
-  if (dayA.dateFrom < dayB.dateFrom) {
+  if (dayA.dateFrom > dayB.dateFrom) {
     return 1;
   }
-  if (dayA.dateFrom > dayB.dateFrom) {
+  if (dayA.dateFrom < dayB.dateFrom) {
     return -1;
   }
   return 0;
