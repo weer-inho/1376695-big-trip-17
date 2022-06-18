@@ -61,6 +61,7 @@ export default class TripPresenter {
 
   resetView = () => {
     if (this.#mode !== Mode.DEFAULT) {
+      this.#tripEditComponent.reset(this.#trip);
       this.#replaceFormToRoute();
     }
   };
@@ -121,6 +122,7 @@ export default class TripPresenter {
   #onEscKeyDown = (evt) => {
     if (evt.key === 'Escape' || evt.key === 'Esc') {
       evt.preventDefault();
+      this.#tripEditComponent.reset(this.#trip);
       this.#replaceFormToRoute();
       document.removeEventListener('keydown', this.#onEscKeyDown);
     }
@@ -139,6 +141,7 @@ export default class TripPresenter {
   };
 
   #handleSaveForm = (trip) => {
+    console.log(trip)
     this.#changeData(
       UserAction.UPDATE_TRIP,
       UpdateType.MINOR,

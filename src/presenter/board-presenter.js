@@ -40,7 +40,6 @@ export default class BoardPresenter {
     this.#tripsModel = tripsModel;
     this.#filterModel = filterModel;
 
-    this.#tripNewPresenter = new TripNewPresenter(this.#boardContainer, this.#handleViewAction);
 
     this.#tripsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -73,6 +72,7 @@ export default class BoardPresenter {
   createTrip = (callback) => {
     this.#currentSortType = SortType.DEFAULT;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#tripNewPresenter = new TripNewPresenter(this.#boardContainer, this.#handleViewAction, this.destinations);
     this.#tripNewPresenter.init(callback);
   };
 
@@ -81,6 +81,11 @@ export default class BoardPresenter {
   };
 
   #renderSort = () => {
+    if (this.#sortComponent !== null) {
+      this.#sortComponent = null;
+      if (this.#boardContainer.querySelector('.trip-events__trip-sort'))
+        this.#boardContainer.querySelector('.trip-events__trip-sort').remove();
+    }
     this.#sortComponent = new SortView(this.#currentSortType);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
     render(this.#sortComponent, this.#tripEvents, RenderPosition.AFTERBEGIN);
@@ -219,6 +224,7 @@ export default class BoardPresenter {
 
     this.#currentSortType = sortType;
     this.#clearTripList();
+    this.#renderSort();
     this.#renderTrips();
   };
 

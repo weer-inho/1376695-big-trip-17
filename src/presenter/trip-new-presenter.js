@@ -1,16 +1,19 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
 import NewFormView from '../view/new-form';
 import {UserAction, UpdateType} from '../const.js';
+import {BLANK_TRIP} from '../const.js';
 
 export default class TripNewPresenter {
   #tripListContainer = null;
   #changeData = null;
   #tripEditComponent = null;
   #destroyCallback = null;
+  #destinations = null;
 
-  constructor(tripListContainer, changeData) {
+  constructor(tripListContainer, changeData, destinations) {
     this.#tripListContainer = tripListContainer;
     this.#changeData = changeData;
+    this.#destinations = destinations;
   }
 
   init = (callback) => {
@@ -21,7 +24,7 @@ export default class TripNewPresenter {
     }
 
 
-    this.#tripEditComponent = new NewFormView();
+    this.#tripEditComponent = new NewFormView(BLANK_TRIP, this.#destinations);
     this.#tripEditComponent.setSaveFormHandler(this.#handleFormSubmit);
     this.#tripEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
@@ -34,7 +37,6 @@ export default class TripNewPresenter {
     if (this.#tripEditComponent === null) {
       return;
     }
-
     this.#destroyCallback?.();
 
     remove(this.#tripEditComponent);
@@ -68,6 +70,7 @@ export default class TripNewPresenter {
       UpdateType.MINOR,
       trip
     );
+    this.destroy();
   };
 
   #handleDeleteClick = () => {

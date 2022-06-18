@@ -53,7 +53,6 @@ export default class TripsApiService extends ApiService {
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
-    console.log(parsedResponse)
     return parsedResponse;
   };
 
