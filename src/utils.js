@@ -44,10 +44,15 @@ export const generateInfoDates = (trips) => [dayjs(trips[0].dateFrom).format('MM
 export const generateInfoCost = (trips) => {
   let total = 0;
 
-  trips.forEach((element) => {
-    total += element.basePrice;
-    if (element.offer.length > 0) {
-      element.offer.forEach((offer) => (total += offer.price));
+  trips.forEach((trip) => {
+    total += trip.basePrice;
+
+    const tripType = trip.type;
+    const neededOfferArray = trip.offersArray.find((offerArray) => offerArray.type === tripType).offers;
+    for (let i = 0; i < trip.offers.length; i++) {
+      if (neededOfferArray.find((neededOffer) => neededOffer.id === trip.offers[i])) {
+        total += neededOfferArray.find((neededOffer) => neededOffer.id === trip.offers[i]).price;
+      }
     }
   });
 

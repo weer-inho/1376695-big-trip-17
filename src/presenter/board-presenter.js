@@ -57,6 +57,7 @@ export default class BoardPresenter {
     this.#filterType = this.#filterModel.filter;
     const trips = this.#tripsModel.trips;
     const filteredTrips = filter[this.#filterType](trips);
+    console.log(filteredTrips)
 
     switch (this.#currentSortType) {
       case SortType.PRICE:
@@ -87,8 +88,9 @@ export default class BoardPresenter {
   #renderSort = () => {
     if (this.#sortComponent !== null) {
       this.#sortComponent = null;
-      if (this.#boardContainer.querySelector('.trip-events__trip-sort'))
+      if (this.#boardContainer.querySelector('.trip-events__trip-sort')) {
         this.#boardContainer.querySelector('.trip-events__trip-sort').remove();
+      }
     }
     this.#sortComponent = new SortView(this.#currentSortType);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);

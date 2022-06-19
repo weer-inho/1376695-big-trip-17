@@ -5,12 +5,13 @@ import {BLANK_TRIP} from '../const';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
-const createEventOffers = (offers) => (`<section class="event__section  event__section--offers">
-${(offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
+const createEventOffers = (offersArray, offersIds) => {
+  return (`<section class="event__section  event__section--offers">
+${(offersArray.offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
 <div class="event__available-offers">
-  ${offers.map((offer) => `<div class="event__offer-selector">
+  ${offersArray.offers.map((offer) => `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}" type="checkbox" name="event-offer-${offer.id}"
-    ${(offer.selected) ? 'checked' : ''}>
+    ${(offersIds.find((offerId) => offerId === offer.id)) ? 'checked' : ''}>
     <label class="event__offer-label" for="event-offer-${offer.id}">
       <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
@@ -18,8 +19,8 @@ ${(offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-
     </label>
   </div>`).join('')}
 </div>`}
-</section>`
-);
+</section>`);
+};
 
 const createEventPhotos = (photos) => (`
 ${photos.map((photo) => `<img class='event__photo' src='${photo.src}' alt='${photos.destination}'>`)}
@@ -29,10 +30,9 @@ const createDestinationList = (destinations) => (`
 ${destinations.map((destination) => `<option value="${destination.name}"></option>`)}
 `);
 
-
-const createNewFormTemplate = (trip, destinations, offers) => {
-  const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting} = trip;
-  const serverOffers = offers.find((element) => element.type === type).offers;
+const createNewFormTemplate = (trip, destinations) => {
+  const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting, offers, offersArray} = trip;
+  const offerForRender = offersArray.find((array) => array.type === type);
   const serverDestinationObject = destinations.find((element) => element.name === destination.name);
 
   return (
@@ -135,7 +135,7 @@ const createNewFormTemplate = (trip, destinations, offers) => {
         </header>
         <section class='event__details'>
           <section class='event__section  event__section--offers'>
-              ${createEventOffers(serverOffers)}
+              ${createEventOffers(offerForRender, offers)}
           </section>
 
           <section class='event__section  event__section--destination'>
@@ -201,8 +201,16 @@ export default class NewFormView extends AbstractStatefulView {
   };
 
   #offersChangeHandler = (evt) => {
-    const name = evt.target.closest('.event__offer-selector').querySelector('span').textContent;
-    const find = this._state.offer.find((item) => item.title === name).selected === !this._state.offer.find((item) => item.title === name).selected;
+    const offerId = Number(evt.target.id.slice(-1));
+    if (evt.target.checked === true) {
+      this._state.offers.push(offerId);
+    } else {
+      const newState = this._state.offers.filter(function(f) { return f !== offerId});
+      this._state.offers = newState;
+    }
+
+    console.log(this._state.offers)
+    // const find = this._state.offer.find((item) => item.title === name).selected === !this._state.offer.find((item) => item.title === name).selected;
   };
 
   removeElement = () => {
@@ -274,6 +282,7 @@ export default class NewFormView extends AbstractStatefulView {
 
   #typePointChanged = (evt) => {
     evt.preventDefault();
+    this._state.offers = [];
     this.updateElement({
       type: evt.target.value,
     });
