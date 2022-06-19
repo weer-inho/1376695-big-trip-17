@@ -25,7 +25,7 @@ export const cities = [
 export const offerTypes = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 
 export const offers = {
-  'taxi': [
+  'taxi':  [
     {
       'id' : 1,
       'title': 'Switch to comfort',

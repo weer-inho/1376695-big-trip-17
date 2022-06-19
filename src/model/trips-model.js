@@ -21,11 +21,15 @@ export default class TripsModel extends Observable {
     return this.#destinations;
   }
 
+  get offers() {
+    return this.#offers;
+  }
+
   init = async () => {
     try {
       const trips = await this.#tripsApiService.trips;
+      this.#offers = await this.#tripsApiService.serverOffers;
       this.#trips = trips.map(this.#adaptToClient);
-      // this.#offers = await this.#tripsApiService.serverOffers;
       this.#destinations = await this.#tripsApiService.serverDestinations;
     } catch (err) {
       this.#trips = [];
@@ -93,7 +97,7 @@ export default class TripsModel extends Observable {
       dateTo: trip['date_to'],
       basePrice: trip['base_price'],
       isFavorite: trip['is_favorite'],
-      offer: offers[trip.type],
+      offersArray: this.#offers,
     };
 
     delete adaptedTrip['date_from'];

@@ -83,8 +83,9 @@ export default class BoardPresenter {
   #renderSort = () => {
     if (this.#sortComponent !== null) {
       this.#sortComponent = null;
-      if (this.#boardContainer.querySelector('.trip-events__trip-sort'))
+      if (this.#boardContainer.querySelector('.trip-events__trip-sort')) {
         this.#boardContainer.querySelector('.trip-events__trip-sort').remove();
+      }
     }
     this.#sortComponent = new SortView(this.#currentSortType);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
