@@ -281,6 +281,7 @@ export default class NewFormView extends AbstractStatefulView {
 
   #typePointChanged = (evt) => {
     evt.preventDefault();
+    this._state.offers = [];
     this.updateElement({
       type: evt.target.value,
     });
