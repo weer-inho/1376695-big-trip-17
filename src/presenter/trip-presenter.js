@@ -16,14 +16,16 @@ export default class TripPresenter {
   #changeData = null;
   #changeMode = null;
   #destinations = null;
+  #offers = null;
 
   #mode = Mode.DEFAULT;
 
-  constructor(tripListContainer, changeData, changeMode, destinations) {
+  constructor(tripListContainer, changeData, changeMode, destinations, offers) {
     this.#tripListContainer = tripListContainer;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
     this.#destinations = destinations;
+    this.#offers = offers;
   }
 
   init = (trip) => {
@@ -33,7 +35,7 @@ export default class TripPresenter {
     const prevTripEditComponent = this.#tripEditComponent;
 
     this.#tripComponent = new RoutePointView(trip);
-    this.#tripEditComponent = new NewFormView(trip, this.#destinations);
+    this.#tripEditComponent = new NewFormView(trip, this.#destinations, this.#offers);
 
     this.#tripComponent.setEditClickHandler(this.#handleEditClick);
     this.#tripComponent.setFavoriteClickHandler(this.#handleFavoriteClick);

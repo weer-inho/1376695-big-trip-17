@@ -21,15 +21,20 @@ export default class TripsModel extends Observable {
     return this.#destinations;
   }
 
+  get offers() {
+    return this.#offers;
+  }
+
   init = async () => {
     try {
       const trips = await this.#tripsApiService.trips;
       this.#trips = trips.map(this.#adaptToClient);
-      // this.#offers = await this.#tripsApiService.serverOffers;
+      this.#offers = await this.#tripsApiService.serverOffers;
       this.#destinations = await this.#tripsApiService.serverDestinations;
     } catch (err) {
       this.#trips = [];
       this.#destinations = [];
+      this.#offers = [];
     }
 
     this._notify(UpdateType.INIT);

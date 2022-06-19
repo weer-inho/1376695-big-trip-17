@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import {offers} from '../mock/data';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
 import {BLANK_TRIP} from '../const';
@@ -31,9 +30,9 @@ ${destinations.map((destination) => `<option value="${destination.name}"></optio
 `);
 
 
-const createNewFormTemplate = (trip, destinations) => {
+const createNewFormTemplate = (trip, destinations, offers) => {
   const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting} = trip;
-  const offer = offers[type];
+  const serverOffers = offers.find((element) => element.type === type).offers;
   const serverDestinationObject = destinations.find((element) => element.name === destination.name);
 
   return (
@@ -136,7 +135,7 @@ const createNewFormTemplate = (trip, destinations) => {
         </header>
         <section class='event__details'>
           <section class='event__section  event__section--offers'>
-              ${createEventOffers(offer)}
+              ${createEventOffers(serverOffers)}
           </section>
 
           <section class='event__section  event__section--destination'>
@@ -160,18 +159,20 @@ const createNewFormTemplate = (trip, destinations) => {
 export default class NewFormView extends AbstractStatefulView {
   #datepicker = null;
   #destinations = null;
+  #offers = null;
 
-  constructor(trip = BLANK_TRIP, destinations) {
+  constructor(trip = BLANK_TRIP, destinations, offers) {
     super();
     this._state = trip;
     this.#destinations = destinations;
+    this.#offers = offers;
 
     this.#setInnerHandlers();
     this.#setDatepicker();
   }
 
   get template() {
-    return createNewFormTemplate(this._state, this.#destinations);
+    return createNewFormTemplate(this._state, this.#destinations, this.#offers);
   }
 
   reset = (trip) => {

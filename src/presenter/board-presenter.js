@@ -49,6 +49,10 @@ export default class BoardPresenter {
     return this.#tripsModel.destinations;
   }
 
+  get offers() {
+    return this.#tripsModel.offers;
+  }
+
   get trips() {
     this.#filterType = this.#filterModel.filter;
     const trips = this.#tripsModel.trips;
@@ -100,7 +104,8 @@ export default class BoardPresenter {
       this.#tripEventsList,
       this.#handleViewAction,
       this.#handleModeChange,
-      this.destinations
+      this.destinations,
+      this.offers
     );
     tripPresenter.init(trip);
     this.#tripPresenter.set(trip.id, tripPresenter);
