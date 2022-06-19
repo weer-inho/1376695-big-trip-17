@@ -1,4 +1,3 @@
-import {offers} from '../mock/data';
 import Observable from '../framework/observable';
 import {UpdateType} from '../const';
 

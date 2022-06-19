@@ -5,8 +5,7 @@ import {BLANK_TRIP} from '../const';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
-const createEventOffers = (offersArray, offersIds) => {
-  return (`<section class="event__section  event__section--offers">
+const createEventOffers = (offersArray, offersIds) => (`<section class="event__section  event__section--offers">
 ${(offersArray.offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
 <div class="event__available-offers">
   ${offersArray.offers.map((offer) => `<div class="event__offer-selector">
@@ -20,7 +19,6 @@ ${(offersArray.offers.length === 0) ? '' : `<h3 class="event__section-title  eve
   </div>`).join('')}
 </div>`}
 </section>`);
-};
 
 const createEventPhotos = (photos) => (`
 ${photos.map((photo) => `<img class='event__photo' src='${photo.src}' alt='${photos.destination}'>`)}
@@ -196,8 +194,9 @@ export default class NewFormView extends AbstractStatefulView {
 
   setOffersChangeHandler = () => {
     // this._callback.offersChange = callback;
-    if (this.element.querySelector('.event__available-offers'))
+    if (this.element.querySelector('.event__available-offers')) {
       this.element.querySelector('.event__available-offers').addEventListener('change', this.#offersChangeHandler);
+    }
   };
 
   #offersChangeHandler = (evt) => {
@@ -205,12 +204,9 @@ export default class NewFormView extends AbstractStatefulView {
     if (evt.target.checked === true) {
       this._state.offers.push(offerId);
     } else {
-      const newState = this._state.offers.filter(function(f) { return f !== offerId});
+      const newState = this._state.offers.filter((offer) => offer !== offerId);
       this._state.offers = newState;
     }
-
-    console.log(this._state.offers)
-    // const find = this._state.offer.find((item) => item.title === name).selected === !this._state.offer.find((item) => item.title === name).selected;
   };
 
   removeElement = () => {

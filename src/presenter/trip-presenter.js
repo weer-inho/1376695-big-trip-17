@@ -143,7 +143,6 @@ export default class TripPresenter {
   };
 
   #handleSaveForm = (trip) => {
-    console.log(trip)
     this.#changeData(
       UserAction.UPDATE_TRIP,
       UpdateType.MINOR,

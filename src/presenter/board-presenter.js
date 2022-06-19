@@ -57,7 +57,6 @@ export default class BoardPresenter {
     this.#filterType = this.#filterModel.filter;
     const trips = this.#tripsModel.trips;
     const filteredTrips = filter[this.#filterType](trips);
-    console.log(filteredTrips)
 
     switch (this.#currentSortType) {
       case SortType.PRICE:

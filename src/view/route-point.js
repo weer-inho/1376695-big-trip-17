@@ -2,22 +2,20 @@ import AbstractView from '../framework/view/abstract-view';
 import {getDuration} from '../utils';
 import dayjs from 'dayjs';
 
-const createEventOffers = (offersArray, offersIds) => {
-  return (`
+const createEventOffers = (offersArray, offersIds) => (`
 <ul class="event__selected-offers">
   ${(offersArray.length === 0) ? '' : `
       ${offersArray.map((offer) => {
-      if (offersIds.find((offerId) => offerId === offer.id)) {
-        return `
-            <li class="event__offer">
-                <span class="event__offer-title">${offer === undefined ? '' : offer.title}</span>
-                &plus;&euro;&nbsp;
-                <span class="event__offer-price">${offer === undefined ? '' : offer.price}</span>
-            </li>`;
-      }
-    }).join('')}`}
+    if (offersIds.find((offerId) => offerId === offer.id)) {
+      return `
+        <li class="event__offer">
+            <span class="event__offer-title">${offer === undefined ? '' : offer.title}</span>
+            &plus;&euro;&nbsp;
+            <span class="event__offer-price">${offer === undefined ? '' : offer.price}</span>
+        </li>`;
+    }
+  }).join('')}`}
 </ul>`);
-};
 
 const createRoutePointTemplate = (trip) => {
   const {type, destination, dateFrom, dateTo, basePrice, offers, offersArray, isFavorite} = trip;
