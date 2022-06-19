@@ -264,8 +264,8 @@ export default class NewFormView extends AbstractStatefulView {
     const serverDestinationObject = this.#destinations.find((element) => element.name === evt.target.value);
     this.updateElement({
       destination: {
-        destinationDescription: serverDestinationObject.description,
         name: evt.target.value,
+        description: serverDestinationObject.description,
         pictures: serverDestinationObject.pictures,
       },
     });
