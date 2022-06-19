@@ -200,8 +200,16 @@ export default class NewFormView extends AbstractStatefulView {
   };
 
   #offersChangeHandler = (evt) => {
-    const name = evt.target.closest('.event__offer-selector').querySelector('span').textContent;
-    const find = this._state.offer.find((item) => item.title === name).selected === !this._state.offer.find((item) => item.title === name).selected;
+    const offerId = Number(evt.target.id.slice(-1));
+    if (evt.target.checked === true) {
+      this._state.offers.push(offerId);
+    } else {
+      const newState = this._state.offers.filter(function(f) { return f !== offerId});
+      this._state.offers = newState;
+    }
+
+    console.log(this._state.offers)
+    // const find = this._state.offer.find((item) => item.title === name).selected === !this._state.offer.find((item) => item.title === name).selected;
   };
 
   removeElement = () => {
