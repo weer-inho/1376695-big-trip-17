@@ -2,7 +2,6 @@ import AbstractView from '../framework/view/abstract-view';
 import {generateInfoDates, generateInfoTitles, generateInfoCost} from '../utils';
 
 const createInfoTemplate = (trips) => {
-  console.log(trips)
   const tripDates = generateInfoDates(trips);
   const tripInfo = generateInfoTitles(trips).join([' &mdash; ']);
   const tripCost = generateInfoCost(trips);

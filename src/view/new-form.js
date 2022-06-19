@@ -1,17 +1,17 @@
 import dayjs from 'dayjs';
-import {offers} from '../mock/data';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
 import flatpickr from 'flatpickr';
 import {BLANK_TRIP} from '../const';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
-const createEventOffers = (offers) => (`<section class="event__section  event__section--offers">
-${(offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
+const createEventOffers = (offersArray, offersIds) => {
+  return (`<section class="event__section  event__section--offers">
+${(offersArray.offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
 <div class="event__available-offers">
-  ${offers.map((offer) => `<div class="event__offer-selector">
+  ${offersArray.offers.map((offer) => `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}" type="checkbox" name="event-offer-${offer.id}"
-    ${(offer.selected) ? 'checked' : ''}>
+    ${(offersIds.find((offerId) => offerId === offer.id)) ? 'checked' : ''}>
     <label class="event__offer-label" for="event-offer-${offer.id}">
       <span class="event__offer-title">${offer.title}</span>
       &plus;&euro;&nbsp;
@@ -19,8 +19,8 @@ ${(offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-
     </label>
   </div>`).join('')}
 </div>`}
-</section>`
-);
+</section>`);
+};
 
 const createEventPhotos = (photos) => (`
 ${photos.map((photo) => `<img class='event__photo' src='${photo.src}' alt='${photos.destination}'>`)}
@@ -32,8 +32,8 @@ ${destinations.map((destination) => `<option value="${destination.name}"></optio
 
 
 const createNewFormTemplate = (trip, destinations) => {
-  const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting} = trip;
-  const offer = offers[type];
+  const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting, offers, offersArray} = trip;
+  const offerForRender = offersArray.find((array) => array.type === type);
   const serverDestinationObject = destinations.find((element) => element.name === destination.name);
 
   return (
@@ -136,7 +136,7 @@ const createNewFormTemplate = (trip, destinations) => {
         </header>
         <section class='event__details'>
           <section class='event__section  event__section--offers'>
-              ${createEventOffers(offer)}
+              ${createEventOffers(offerForRender, offers)}
           </section>
 
           <section class='event__section  event__section--destination'>

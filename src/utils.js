@@ -49,9 +49,6 @@ export const generateInfoCost = (trips) => {
 
     const tripType = trip.type;
     const neededOfferArray = trip.offersArray.find((offerArray) => offerArray.type === tripType).offers;
-    console.log('neededOfferArray: ', neededOfferArray);
-    console.log('trip.offers: ', trip.offers);
-
     for (let i = 0; i < trip.offers.length; i++) {
       if (neededOfferArray.find((neededOffer) => neededOffer.id === trip.offers[i])) {
         total += neededOfferArray.find((neededOffer) => neededOffer.id === trip.offers[i]).price;
