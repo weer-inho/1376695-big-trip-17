@@ -42,6 +42,7 @@ export default class TripPresenter {
     this.#tripEditComponent.setSaveFormHandler(this.#handleSaveForm);
     this.#tripEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
     this.#tripEditComponent.setOffersChangeHandler();
+    this.#tripEditComponent.setPriceChangeHandler();
 
     if (prevTripComponent === null || prevTripEditComponent === null) {
       render(this.#tripComponent, this.#tripListContainer);
