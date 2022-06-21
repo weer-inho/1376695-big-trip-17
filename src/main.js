@@ -2,7 +2,7 @@ import BoardPresenter from './presenter/board-presenter';
 import FilterPresenter from './presenter/filter-presenter';
 import TripsModel from './model/trips-model';
 import FilterModel from './model/filter-model';
-import NewTripButtonView from './view/new-trip-button';
+import NewTripButtonView from './view/new-trip-button-view';
 import {render} from './framework/render';
 import TripsApiService from './trips-api-service';
 

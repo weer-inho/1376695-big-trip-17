@@ -1,7 +1,7 @@
 import {replace, render, remove} from '../framework/render';
 import {UserAction, UpdateType} from '../const';
-import RoutePointView from '../view/route-point';
-import NewFormView from '../view/new-form';
+import RoutePointView from '../view/route-point-view';
+import NewFormView from '../view/new-form-view';
 
 const Mode = {
   'DEFAULT': 'DEFAULT',

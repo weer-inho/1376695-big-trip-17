@@ -1,9 +1,9 @@
-import InfoView from '../view/trip-info';
-import SortView from '../view/sort';
-import EmptyView from '../view/empty';
-import TripEventsListView from '../view/trip-events-list';
+import InfoView from '../view/trip-info-view';
+import SortView from '../view/sort-view';
+import EmptyView from '../view/empty-view';
+import TripEventsListView from '../view/trip-events-list-view';
 import TripPresenter from './trip-presenter';
-import LoadingView from '../view/loading';
+import LoadingView from '../view/loading-view';
 import UiBlocker from '../framework/ui-blocker/ui-blocker.js';
 import {render, RenderPosition, remove} from '../framework/render';
 import {updateItem, sortPrice, sortTime, sortDay, filter} from '../utils';

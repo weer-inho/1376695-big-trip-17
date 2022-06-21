@@ -1,5 +1,5 @@
 import {remove, render, RenderPosition} from '../framework/render.js';
-import NewFormView from '../view/new-form';
+import NewFormView from '../view/new-form-view';
 import {UserAction, UpdateType} from '../const.js';
 import {BLANK_TRIP} from '../const.js';
 
