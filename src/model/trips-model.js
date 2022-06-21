@@ -97,7 +97,7 @@ export default class TripsModel extends Observable {
       dateTo: trip['date_to'],
       basePrice: trip['base_price'],
       isFavorite: trip['is_favorite'],
-      offersArray: this.#offers,
+      availableOffers: this.#offers,
     };
 
     delete adaptedTrip['date_from'];

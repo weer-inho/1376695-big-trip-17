@@ -5,10 +5,10 @@ import {BLANK_TRIP} from '../const';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
-const createEventOffers = (offersArray, offersIds) => (`<section class="event__section  event__section--offers">
-${(offersArray.offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
+const createEventOffers = (offersByType, offersIds) => (`<section class="event__section  event__section--offers">
+${(offersByType.offers.length === 0) ? '' : `<h3 class="event__section-title  event__section-title--offers">Offers</h3>
 <div class="event__available-offers">
-  ${offersArray.offers.map((offer) => `<div class="event__offer-selector">
+  ${offersByType.offers.map((offer) => `<div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.id}" type="checkbox" name="event-offer-${offer.id}"
     ${(offersIds.find((offerId) => offerId === offer.id)) ? 'checked' : ''}>
     <label class="event__offer-label" for="event-offer-${offer.id}">
@@ -29,9 +29,9 @@ ${destinations.map((destination) => `<option value="${destination.name}"></optio
 `);
 
 const createNewFormTemplate = (trip, destinations) => {
-  const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting, offers, offersArray} = trip;
-  const offerForRender = offersArray.find((array) => array.type === type);
-  const serverDestinationObject = destinations.find((element) => element.name === destination.name);
+  const {type, destination, dateFrom, dateTo, basePrice, isSaving, isDeleting, offers, availableOffers} = trip;
+  const offerForRender = availableOffers.find((offer) => offer.type === type);
+  const serverDestination = destinations.find((element) => element.name === destination.name);
 
   return (
     `<li class='trip-events__item'>
@@ -139,12 +139,12 @@ const createNewFormTemplate = (trip, destinations) => {
           <section class='event__section  event__section--destination'>
             <h3 class='event__section-title  event__section-title--destination'>Destination</h3>
             <p class='event__destination-description'>
-              ${serverDestinationObject.description}
+              ${serverDestination.description}
             </p>
 
             <div class='event__photos-container'>
               <div class='event__photos-tape'>
-                  ${createEventPhotos(serverDestinationObject.pictures)}
+                  ${createEventPhotos(serverDestination.pictures)}
               </div>
             </div>
           </section>
@@ -275,12 +275,12 @@ export default class NewFormView extends AbstractStatefulView {
   };
 
   #cityNameChanged = (evt) => {
-    const serverDestinationObject = this.#destinations.find((element) => element.name === evt.target.value);
+    const serverDestination = this.#destinations.find((element) => element.name === evt.target.value);
     this.updateElement({
       destination: {
         name: evt.target.value,
-        description: serverDestinationObject.description,
-        pictures: serverDestinationObject.pictures,
+        description: serverDestination.description,
+        pictures: serverDestination.pictures,
       },
     });
   };

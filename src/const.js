@@ -61,7 +61,7 @@ export const BLANK_TRIP = {
     3,
     5
   ],
-  'offersArray': [
+  'availableOffers': [
     {
       'type': 'taxi',
       'offers': [
