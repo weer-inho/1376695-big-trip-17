@@ -1,4 +1,4 @@
-import InfoView from '../view/trip-info-view';
+import InfoView from '../view/info-view';
 import SortView from '../view/sort-view';
 import EmptyView from '../view/empty-view';
 import TripEventsListView from '../view/trip-events-list-view';
