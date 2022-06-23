@@ -27,6 +27,8 @@ export default class TripNewPresenter {
     this.#tripEditComponent = new NewFormView(BLANK_TRIP, this.#destinations);
     this.#tripEditComponent.setSaveFormHandler(this.#handleFormSubmit);
     this.#tripEditComponent.setDeleteClickHandler(this.#handleDeleteClick);
+    this.#tripEditComponent.setPriceChangeHandler();
+
 
     render(this.#tripEditComponent, this.#tripListContainer.querySelector('.trip-events__list'), RenderPosition.AFTERBEGIN);
 
